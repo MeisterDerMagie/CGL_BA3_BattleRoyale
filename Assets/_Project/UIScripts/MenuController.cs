@@ -11,7 +11,7 @@ public class SceneController : MonoBehaviour
 {
     [SerializeField] private Transform cam;
     [SerializeField] private List<Transform> cameraTargets;
-    [SerializeField] private float transitionDuration = 0.15f;
+    [SerializeField] private float transitionDuration = 0.75f;
     [SerializeField] private Ease ease = Ease.InOutExpo;
     [SerializeField] private Transform currentScene;
 
@@ -27,6 +27,9 @@ public class SceneController : MonoBehaviour
         {
             cameraTargets[i].gameObject.SetActive(false);
         }
+        
+        //move camera to first scene
+        cam.position = currentScene.position.With(z: cam.position.z);
     }
 
     [Button]
