@@ -75,7 +75,7 @@ public class PlayerAnimations : MonoBehaviour
     {
         StopIdleFaceAnimations();
         anim.AnimationState.SetAnimation(0, "dying", false);
-        anim.AnimationState.AddAnimation(0, "dead", true, 0); 
+        //anim.AnimationState.AddAnimation(0, "dead", true, 0); 
         //stop blinking
         anim.AnimationState.ClearTrack(2);
     }
