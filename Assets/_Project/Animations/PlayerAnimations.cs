@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Spine;
 using Spine.Unity;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(SkeletonAnimation))]
 public class PlayerAnimations : MonoBehaviour
@@ -20,11 +22,19 @@ public class PlayerAnimations : MonoBehaviour
     public void PlayIdleAnimation()
     {
         //base idle animation
-        anim.AnimationState.SetAnimation(0, "idle", true);
+        TrackEntry trackEntry = anim.AnimationState.SetAnimation(0, "idle", true);
+        //start idle animation at random time
+        trackEntry.TrackTime = Random.Range(0f, trackEntry.AnimationEnd);
+        
         //idle face animation
-        anim.AnimationState.SetAnimation(1, "idleFace", true);
+        trackEntry = anim.AnimationState.SetAnimation(1, "idleFace", true);
+        //start face animation at random time
+        trackEntry.TrackTime = Random.Range(0f, trackEntry.AnimationEnd);
+        
         //blinking animation
-        anim.AnimationState.SetAnimation(2, "blink", true);
+        trackEntry = anim.AnimationState.SetAnimation(2, "blink", true);
+        //start blinking animation at random time
+        trackEntry.TrackTime = Random.Range(0f, trackEntry.AnimationEnd);
     }
 
     [Button]

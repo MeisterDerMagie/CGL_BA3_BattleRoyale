@@ -163,8 +163,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1875867024689135987}
+  - component: {fileID: 3122215189522559641}
   - component: {fileID: 1875867024689135985}
   - component: {fileID: 1875867024689135986}
+  - component: {fileID: 6174087760264895350}
+  - component: {fileID: 8587447064190090701}
+  - component: {fileID: 7362503191521838957}
+  - component: {fileID: 7979604386251673043}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -188,6 +193,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3122215189522559641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 73d883706256dff45b95a79ad631d1a4
+  hasSpawned: 0
 --- !u!50 &1875867024689135985
 Rigidbody2D:
   serializedVersion: 4
@@ -225,3 +247,61 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 1.25}
   m_Size: {x: 1.82, y: 2.54}
   m_Direction: 0
+--- !u!114 &6174087760264895350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfac7e658b09474082b76812faa9ba27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1875867023741950710}
+  playerMovement: {fileID: 7979604386251673043}
+--- !u!114 &8587447064190090701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5156ed7cfc34eada607e414d5bbe785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputHandler: {fileID: 7362503191521838957}
+--- !u!114 &7362503191521838957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c872b8e326e14b069c8b6bd38c80ff3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6174087760264895350}
+  axis:
+    axis: 0
+--- !u!114 &7979604386251673043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc0a3cb346ef5c4887fe776bced86a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 1875867024689135985}
+  moveSpeed: 8
+  jumpPower: 8
+  rayCastLength: 0.8
