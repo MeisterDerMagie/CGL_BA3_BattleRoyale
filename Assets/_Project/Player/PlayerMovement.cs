@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Wichtel.Extensions;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -41,14 +42,10 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        Debug.LogError("This method doesn't work properly. Needs overhaul.");
-        
-        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position, Vector2.down, rayCastLength);
-        
-        Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - rayCastLength), Color.magenta, 3f, false);
-        
-        bool isGrounded = groundCheck.collider != null && groundCheck.collider.CompareTag("platform");
-        Debug.Log("isGrounded = " + isGrounded);
+        int layerMask = LayerMask.GetMask("Platforms");
+        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position.With(y: transform.position.y + 0.7f), Vector2.down, rayCastLength, layerMask);
+
+        bool isGrounded = groundCheck.collider != null;// && groundCheck.collider.CompareTag("platform");
 
         return isGrounded;
     }

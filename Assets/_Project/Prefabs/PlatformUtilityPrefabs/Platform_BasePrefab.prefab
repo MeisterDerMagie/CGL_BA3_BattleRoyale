@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2796683057052067038}
   - component: {fileID: 591547738416533979}
   - component: {fileID: 4353459251185166491}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platform_BasePrefab
   m_TagString: platform
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ EdgeCollider2D:
   m_GameObject: {fileID: 3256586831340616408}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ba32083f2452b7a42ae3fcbaeed6efa5, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0

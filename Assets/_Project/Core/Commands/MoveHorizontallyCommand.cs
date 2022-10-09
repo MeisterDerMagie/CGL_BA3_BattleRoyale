@@ -13,7 +13,6 @@ public class MoveHorizontallyCommand : Command<Player>
     public override void Execute()
     {
         target.playerMovement.MoveHorizontally(axis.axis);
-        target.anim.PlayJumpAnimation();
     }
 }
 

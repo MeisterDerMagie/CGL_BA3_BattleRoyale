@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyMaps:
   - action: jump
-    keyCodePrimary: 32
-    keyCodeSecondary: 119
+    keyCodePrimary: 119
+    keyCodeSecondary: 273
   - action: moveLeft
     keyCodePrimary: 97
-    keyCodeSecondary: 273
+    keyCodeSecondary: 276
   - action: moveRight
     keyCodePrimary: 100
     keyCodeSecondary: 275

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1875867023741950705}
   - component: {fileID: 1875867023741950706}
   - component: {fileID: 1875867023741950710}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spine GameObject (Player)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 8587447064190090701}
   - component: {fileID: 7362503191521838957}
   - component: {fileID: 7979604386251673043}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,11 +225,11 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 2
+  m_Material: {fileID: 6200000, guid: 507e7a7b86d7bf848b0d7e971ce13f04, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &1875867024689135986
 CapsuleCollider2D:
@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c872b8e326e14b069c8b6bd38c80ff3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyboardMap: {fileID: 11400000, guid: 463a044331822884f9c4e521760ba5c3, type: 2}
   player: {fileID: 6174087760264895350}
   axis:
     axis: 0
@@ -303,5 +304,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1875867024689135985}
   moveSpeed: 8
-  jumpPower: 8
+  jumpPower: 1000
   rayCastLength: 0.8
