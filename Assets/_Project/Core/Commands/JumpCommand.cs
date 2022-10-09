@@ -8,7 +8,7 @@ public class JumpCommand : Command<Player>
     public override void Execute()
     {
         target.playerMovement.Jump();
-        target.anim.PlayJumpAnimation();
+        //target.anim.PlayJumpAnimation();
     }
 }
 }

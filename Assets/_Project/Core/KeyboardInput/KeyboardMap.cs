@@ -53,13 +53,13 @@ public class KeyboardMap : ScriptableObject
             if (keyMap.action == "moveLeft")
             {
                 //if the player pressed the button for "moveLeft", subtract 1 from the axis
-                if (Input.GetKey(keyMap.keyCodePrimary) || Input.GetKeyDown(keyMap.keyCodeSecondary)) axis += -1f;
+                if (Input.GetKey(keyMap.keyCodePrimary) || Input.GetKey(keyMap.keyCodeSecondary)) axis += -1f;
             }
 
             if (keyMap.action == "moveRight")
             {
                 //if the player pressed the button for "moveLeft", add 1 to the axis
-                if (Input.GetKey(keyMap.keyCodePrimary) || Input.GetKeyDown(keyMap.keyCodeSecondary)) axis += 1f;
+                if (Input.GetKey(keyMap.keyCodePrimary) || Input.GetKey(keyMap.keyCodeSecondary)) axis += 1f;
             }
         }
 

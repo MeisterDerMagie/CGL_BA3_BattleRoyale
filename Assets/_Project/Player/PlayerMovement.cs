@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpPower = 8f;
-    [SerializeField] private float rayCastLength = 0.8f;
+    [SerializeField] private Vector2 groundedBoxCastSize;
     
     private float horizontalAxis;
     private bool jump;
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if(jump && IsGrounded()) PerformJump();
-        if(horizontalAxis != 0f) PerformMoveHorizontal();
+        PerformMoveHorizontal();
         
         //reset input
         horizontalAxis = 0f;
@@ -30,20 +30,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void PerformJump()
     {
-        Debug.Log("Jump!");
-        rb.AddForce(new Vector2(0f, jumpPower));
+        rb.AddForce(new Vector2(0f, jumpPower), ForceMode2D.Impulse);
     }
 
     private void PerformMoveHorizontal()
     {
-        float velocity = horizontalAxis * moveSpeed;
-        rb.velocity = new Vector2(velocity, rb.velocity.y);
+        float horizontalVelocity = horizontalAxis * moveSpeed * Time.deltaTime;
+        rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
     }
 
     private bool IsGrounded()
     {
         int layerMask = LayerMask.GetMask("Platforms");
-        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position.With(y: transform.position.y + 0.7f), Vector2.down, rayCastLength, layerMask);
+        //RaycastHit2D groundCheck = Physics2D.Raycast(transform.position.With(y: transform.position.y + 0.7f), Vector2.down, rayCastLength, layerMask);
+        var groundCheck = Physics2D.BoxCast(transform.position.With(y: transform.position.y + 0.1f),  new Vector2(groundedBoxCastSize.x, groundedBoxCastSize.y),  0f,Vector2.down, 0f, layerMask: layerMask);
 
         bool isGrounded = groundCheck.collider != null;// && groundCheck.collider.CompareTag("platform");
 
