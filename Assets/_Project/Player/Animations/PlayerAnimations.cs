@@ -87,11 +87,16 @@ public class PlayerAnimations : MonoBehaviour
     {
         StopIdleFaceAnimations();
         anim.AnimationState.SetAnimation(0, "dying", false);
-        //anim.AnimationState.AddAnimation(0, "dead", true, 0); 
         //stop blinking
         anim.AnimationState.ClearTrack(2);
     }
 
+    [Button]
+    public void PlayDeadPokeAnimation()
+    {
+        StopIdleFaceAnimations();
+        anim.AnimationState.SetAnimation(0, "deadPoking", false);
+    }
     private void StopIdleFaceAnimations()
     {
         anim.AnimationState.ClearTrack(1);

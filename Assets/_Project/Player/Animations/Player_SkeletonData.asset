@@ -27,11 +27,17 @@ MonoBehaviour:
   fromAnimation:
   - inAirFalling
   - landing
+  - deadPoking
+  - dying
   toAnimation:
   - landing
+  - idle
+  - idle
   - idle
   duration:
   - 0.05
   - 0.05
+  - 0.5
+  - 0.5
   defaultMix: 0.1
   controller: {fileID: 0}

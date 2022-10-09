@@ -10,6 +10,7 @@ public class PlayerMainMenuInteraction : MonoBehaviour
     [SerializeField] private AudioSourceRandomizer ouchSfx, deathSfx, hitSfx;
     
     [SerializeField] private int numberOfClicksUntilDeath;
+    [SerializeField] private int numberOfClicksUntilRevive;
     [SerializeField, ReadOnly] private int numberOfClicks;
     
     
@@ -29,10 +30,21 @@ public class PlayerMainMenuInteraction : MonoBehaviour
             anim.PlayDeathAnimation();
             deathSfx.Play();
         }
-        //if the player keeps klicking after death, play hit sound
+        //if the player keeps klicking after death, play poke animation and play hit sound
         else
         {
+            anim.PlayDeadPokeAnimation();
             hitSfx.Play();
+            
+            if(numberOfClicks > (numberOfClicksUntilDeath + numberOfClicksUntilRevive)) Revive();
         }
+    }
+
+    private void Revive()
+    {
+        return; //don't revive, it looks ugly...
+        
+        anim.PlayIdleAnimation();
+        numberOfClicks = 0;
     }
 }
