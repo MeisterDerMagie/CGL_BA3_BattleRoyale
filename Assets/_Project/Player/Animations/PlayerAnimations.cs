@@ -10,6 +10,8 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(SkeletonAnimation))]
 public class PlayerAnimations : MonoBehaviour
 {
+    private float animationSpeed = 1f;
+    
     [SerializeField, HideInInspector] private SkeletonAnimation anim;
     
     void Start()
@@ -41,8 +43,8 @@ public class PlayerAnimations : MonoBehaviour
     public void PlayJumpAnimation()
     {
         StopIdleFaceAnimations();
-        anim.AnimationState.SetAnimation(0, "jump", false);
-        anim.AnimationState.AddAnimation(0, "inAirRising", true, 0);
+        //anim.AnimationState.SetAnimation(0, "jump", false);
+        anim.AnimationState.SetAnimation(0, "inAirRising", true);
     }
 
     [Button]
@@ -93,6 +95,12 @@ public class PlayerAnimations : MonoBehaviour
     private void StopIdleFaceAnimations()
     {
         anim.AnimationState.ClearTrack(1);
+    }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        animationSpeed = speed;
+        anim.AnimationState.TimeScale = animationSpeed;
     }
     
     #if UNITY_EDITOR

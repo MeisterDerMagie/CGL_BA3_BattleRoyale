@@ -395,7 +395,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: inAirRising
+  _animationName: flying
   loop: 1
   timeScale: 1
 --- !u!114 &9068972121153614520
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 9068972121153614523}
   slot: playerColor
-  color: {r: 1, g: 0, b: 0.72496986, a: 1}
+  color: {r: 0, g: 0.35448837, b: 1, a: 1}
 --- !u!1 &9068972121445605730
 GameObject:
   m_ObjectHideFlags: 0

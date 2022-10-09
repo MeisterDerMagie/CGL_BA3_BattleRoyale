@@ -15,7 +15,7 @@ MonoBehaviour:
   loadAdditively: 0
   unloadScenesBefore: 1
   loadingScreen: {fileID: 9068972121465458022, guid: be9496b54989a554cb4b628e9a6a90a4, type: 3}
-  additionalFakeLoadingTime: 3
+  additionalFakeLoadingTime: 2
   scenesToUnloadBefore:
   - sceneAsset: {fileID: 102900000, guid: aa77375b8d9115d4b85c9e0256de4aab, type: 3}
     scenePath: Assets/_Project/Scenes/MainMenu.unity
