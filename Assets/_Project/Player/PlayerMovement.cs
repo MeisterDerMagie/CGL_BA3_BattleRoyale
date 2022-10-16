@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Doodlenite;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Wichtel.Extensions;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GroundCheck groundCheck;
@@ -15,10 +16,21 @@ public class PlayerMovement : MonoBehaviour
     
     private float horizontalAxis;
     private bool jump;
-    
+
+    private void Start()
+    {
+        //ignore collision between players - layer 6 needs to be the player layer
+        Physics2D.IgnoreLayerCollision(6, 6);
+    }
+
     private void FixedUpdate()
     {
+        //only move your own player
+        if (!isLocalPlayer) return;
+        
+        //jump
         if(jump && groundCheck.IsGrounded()) PerformJump();
+        //move
         PerformMoveHorizontal();
         
         //reset input
@@ -42,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontalVelocity = horizontalAxis * moveSpeed * Time.deltaTime;
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
+
+        Debug.Log($"horizontal velocity: {rb.velocity.x}");
     }
 
     private void OnValidate()

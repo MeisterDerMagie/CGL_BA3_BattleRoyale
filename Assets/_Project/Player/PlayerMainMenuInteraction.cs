@@ -10,7 +10,6 @@ public class PlayerMainMenuInteraction : MonoBehaviour
     [SerializeField] private AudioSourceRandomizer ouchSfx, deathSfx, hitSfx;
     
     [SerializeField] private int numberOfClicksUntilDeath;
-    [SerializeField] private int numberOfClicksUntilRevive;
     [SerializeField, ReadOnly] private int numberOfClicks;
     
     
@@ -35,16 +34,6 @@ public class PlayerMainMenuInteraction : MonoBehaviour
         {
             anim.PlayDeadPokeAnimation();
             hitSfx.Play();
-            
-            if(numberOfClicks > (numberOfClicksUntilDeath + numberOfClicksUntilRevive)) Revive();
         }
-    }
-
-    private void Revive()
-    {
-        return; //don't revive, it looks ugly...
-        
-        anim.PlayIdleAnimation();
-        numberOfClicks = 0;
     }
 }
