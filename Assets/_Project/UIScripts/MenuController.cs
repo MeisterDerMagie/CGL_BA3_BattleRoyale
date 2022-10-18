@@ -13,14 +13,14 @@ public class MenuController : MonoBehaviour
     [SerializeField] private List<Transform> cameraTargets;
     [SerializeField] private float transitionDuration = 0.75f;
     [SerializeField] private Ease ease = Ease.InOutExpo;
-    [SerializeField] private Transform currentScene;
+    [SerializeField] private Transform currentMenu;
     [SerializeField] private AudioSourceRandomizer woosh;
 
     private Tween currentTween;
 
     private void Start()
     {
-        currentScene = cameraTargets[0];
+        currentMenu = cameraTargets[0];
         
         //activate first scene
         cameraTargets[0].gameObject.SetActive(true);
@@ -32,7 +32,7 @@ public class MenuController : MonoBehaviour
         }
         
         //move camera to first scene
-        cam.position = currentScene.position.With(z: cam.position.z);
+        cam.position = currentMenu.position.With(z: cam.position.z);
     }
 
     private void Update()
@@ -51,7 +51,7 @@ public class MenuController : MonoBehaviour
         Transform newScene = cameraTargets[sceneIndex];
         
         //do nothing if the new scene is the current scene
-        if (newScene == currentScene)
+        if (newScene == currentMenu)
             return;
         
         //kill running tween if there is one
@@ -61,13 +61,13 @@ public class MenuController : MonoBehaviour
         newScene.gameObject.SetActive(true);
         
         //move camera to new scene and deactivate old scene then
-        Transform sceneToDeactivate = currentScene;
+        Transform sceneToDeactivate = currentMenu;
         currentTween = cam.DOMove(newScene.position.With(z: cam.position.z), transitionDuration).SetEase(ease).OnComplete(()=> {sceneToDeactivate.gameObject.SetActive(false);});
         
         //play woosh sound
         woosh.Play();
 
         //set new scene as currentScene
-        currentScene = newScene;
+        currentMenu = newScene;
     }
 }
