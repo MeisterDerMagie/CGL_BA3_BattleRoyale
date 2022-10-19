@@ -1,22 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EventSystem 
+namespace GameProgrammingPatterns {
+public class EventSystemJonas
 {
-    private static EventSystem instance;
-    public  static EventSystem Instance
+    private static EventSystemJonas instance;
+
+    public static EventSystemJonas Instance
     {
         get
         {
-            if (instance == null) instance = new EventSystem();
+            if (instance == null) instance = new EventSystemJonas();
             return instance;
         }
     }
 
     public delegate void EventListener(string eventName, object param = null);
+
     private Dictionary<string, List<EventListener>> eventListener;
 
-    EventSystem()
+    EventSystemJonas()
     {
         eventListener = new Dictionary<string, List<EventListener>>();
     }
@@ -39,7 +42,8 @@ public class EventSystem
             for (int i = eventListener[eventId].Count - 1; i >= 0; i--)
                 eventListener[eventId][i](eventName, param);
 
-        System.Diagnostics.Debug.WriteLine(string.Format("Event {0} fired: {1}, {2}", 
+        System.Diagnostics.Debug.WriteLine(string.Format("Event {0} fired: {1}, {2}",
             eventId, eventName, param == null ? "" : param.ToString()));
     }
+}
 }

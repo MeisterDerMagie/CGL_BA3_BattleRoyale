@@ -1,5 +1,6 @@
 ﻿//(c) copyright by Martin M. Klöckener
 using System;
+using GameProgrammingPatterns;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,12 @@ public class SelectPlayerColor: MonoBehaviour
     
     public void SetPlayerColor()
     {
-        EventSystem.Instance.Fire("LOBBY", "playerColorChanged", new PlayerColorLink(roomPlayer.index, colorPickerImage.color));
+        EventSystemJonas.Instance.Fire("LOBBY", "playerColorChanged", new PlayerColorLink(roomPlayer.index, colorPickerImage.color));
     }
 
     private void Start()
     {
-        EventSystem.Instance.AddEventListener("LOBBY", OnPlayerColorChanged);
+        EventSystemJonas.Instance.AddEventListener("LOBBY", OnPlayerColorChanged);
     }
 
     private void OnPlayerColorChanged(string eventName, object param = null)
