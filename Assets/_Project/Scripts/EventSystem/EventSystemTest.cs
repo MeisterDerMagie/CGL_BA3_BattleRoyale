@@ -15,20 +15,20 @@ public class EventSystemTest : MonoBehaviour
         
         float score = 4.5f;
         
-        Events.TestEvent.Invoke(1.1f, 3, "asdf", invokeNetworkEvent: true);
         
         Events.OnPlayerConnected.Subscribe(OnPlayerConnected);
-        Events.OnPlayerConnected.Invoke(score);
+        Events.OnPlayerConnected.Invoke(score, true);
         
         Events.OnPlayerDied.Subscribe(OnPlayerDied);
+        Events.OnPlayerDied.Invoke(true);
         
-        //Call event by string
-        NetworkEvents.Release("OnPlayerDied", new object[]{});
-        NetworkEvents.Release("OnPlayerConnected", new object[]{2.6f});
+        Events.TestEvent.Subscribe(OnTestEvent);
+        Events.TestEvent.Invoke(3, 3, 3, "asdf", new Color(0.4f, 0.2f, 0.5f), invokeNetworkEvent: true);
     }
 
     private static void OnPlayerConnected(float _float) => Debug.Log(_float);
     private static void OnPlayerDied() => Debug.Log("player died");
 
+    private static void OnTestEvent(float _float, double _double, int _int, string _string, Color _color) => Debug.Log($"float: {_float}; double: {_double}; int: {_int}; string: {_string}; Color: {_color}");
 }
 }
