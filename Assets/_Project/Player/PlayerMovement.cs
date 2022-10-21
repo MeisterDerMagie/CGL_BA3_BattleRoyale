@@ -54,8 +54,6 @@ public class PlayerMovement : NetworkBehaviour
     {
         float horizontalVelocity = horizontalAxis * moveSpeed * Time.deltaTime;
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
-
-        Debug.Log($"horizontal velocity: {rb.velocity.x}");
     }
 
     private void OnValidate()

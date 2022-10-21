@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1875867023741950711}
   - component: {fileID: 1875867023741950704}
   - component: {fileID: 1875867023741950705}
-  - component: {fileID: 1875867023741950706}
   - component: {fileID: 1875867023741950710}
   - component: {fileID: 7727425722922996949}
+  - component: {fileID: 442242962237537257}
   m_Layer: 6
   m_Name: Spine GameObject (Player)
   m_TagString: Untagged
@@ -127,21 +127,6 @@ MonoBehaviour:
   _animationName: idle
   loop: 1
   timeScale: 1
---- !u!114 &1875867023741950706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875867023741950700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc286bf423c8a384fa596d7e5e1a3daf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 1875867023741950705}
-  slot: playerColor
-  color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &1875867023741950710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +157,21 @@ MonoBehaviour:
   anims: {fileID: 1875867023741950710}
   walkingSpeedModifier: 0.06
   DEBUG_walkingSpeed: 0
+--- !u!114 &442242962237537257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867023741950700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc286bf423c8a384fa596d7e5e1a3daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1875867023741950705}
+  slot: playerColor
+  color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1875867024689135980
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +191,8 @@ GameObject:
   - component: {fileID: 7979604386251673043}
   - component: {fileID: 8954516905429519590}
   - component: {fileID: 5295794474114905704}
+  - component: {fileID: 6507775812878441501}
+  - component: {fileID: 1955317531405702870}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -408,3 +410,31 @@ MonoBehaviour:
   angularVelocityMode: 2
   angularVelocityMin: Infinity
   angularVelocityMax: -Infinity
+--- !u!114 &6507775812878441501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c622aea3eee141039a961641a831113f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &1955317531405702870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e80754d78f4567abe2cec836710b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

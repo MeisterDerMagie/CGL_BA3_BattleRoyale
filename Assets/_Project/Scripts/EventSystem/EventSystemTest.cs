@@ -1,28 +1,28 @@
 ﻿//(c) copyright by Martin M. Klöckener
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Doodlenite;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Sectile {
+namespace Doodlenite {
 public class EventSystemTest : MonoBehaviour
 {
+    private void Start()
+    {
+        Events.OnPlayerConnected.Subscribe(OnPlayerConnected);
+        Events.OnPlayerDied.Subscribe(OnPlayerDied);
+        Events.TestEvent.Subscribe(OnTestEvent);
+    }
+
     [Button]
     public void Test()
     {
-        EventReferences.Initialize();
-        
         float score = 4.5f;
         
         
-        Events.OnPlayerConnected.Subscribe(OnPlayerConnected);
         Events.OnPlayerConnected.Invoke(score, true);
-        
-        Events.OnPlayerDied.Subscribe(OnPlayerDied);
         Events.OnPlayerDied.Invoke(true);
-        
-        Events.TestEvent.Subscribe(OnTestEvent);
         Events.TestEvent.Invoke(3, 3, 3, "asdf", new Color(0.4f, 0.2f, 0.5f), invokeNetworkEvent: true);
     }
 
