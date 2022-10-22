@@ -3,13 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Doodlenite {
-public class UISetPlayerColor : MonoBehaviour
+public class UISetPlayerName : MonoBehaviour
 {
-    [SerializeField] private Image colorPicker;
+    [SerializeField] private TMP_InputField inputField;
 
     private int slotIndex;
     private NetworkRoomManager roomManager;
@@ -21,7 +22,7 @@ public class UISetPlayerColor : MonoBehaviour
         slotIndex = GetComponentInParent<PlayerLobbySlot>().transform.GetSiblingIndex();
     }
 
-    public void PickColor()
+    public void ConfirmPlayeName()
     {
         List<NetworkRoomPlayer> roomPlayers = roomManager.roomSlots;
 
@@ -31,7 +32,7 @@ public class UISetPlayerColor : MonoBehaviour
             if(!roomPlayer.isLocalPlayer) continue;
             
             var playerData = roomPlayer.GetComponentInChildren<RoomPlayerData>();
-            playerData.CmdSetColor(colorPicker.color);
+            playerData.CmdSetPlayerName(inputField.text);
         }
     }
 }

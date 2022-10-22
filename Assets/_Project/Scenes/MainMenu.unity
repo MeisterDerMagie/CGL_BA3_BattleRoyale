@@ -300,7 +300,7 @@ MonoBehaviour:
   DualMode: 1
   NoDelay: 1
   Interval: 10
-  Timeout: 10000
+  Timeout: 2147483647
   FastResend: 2
   CongestionWindow: 0
   SendWindowSize: 4096
@@ -7319,6 +7319,7 @@ MonoBehaviour:
   anim: {fileID: 545484626}
   slot: playerColor
   color: {r: 1, g: 0, b: 0, a: 1}
+  setColorOnStart: 1
 --- !u!114 &545484626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20331,6 +20332,7 @@ MonoBehaviour:
   anim: {fileID: 5386352499611734287}
   slot: playerColor
   color: {r: 0.24677235, g: 0.6415094, b: 0, a: 1}
+  setColorOnStart: 1
 --- !u!4 &5386352499611734285
 Transform:
   m_ObjectHideFlags: 0
