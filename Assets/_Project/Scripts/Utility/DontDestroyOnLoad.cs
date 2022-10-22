@@ -7,6 +7,6 @@ using UnityEngine;
 namespace Doodlenite {
 public class DontDestroyOnLoad : MonoBehaviour
 {
-    private void Awake() => DontDestroyOnLoad(gameObject);
+    private void Start() => DontDestroyOnLoad(gameObject);
 }
 }

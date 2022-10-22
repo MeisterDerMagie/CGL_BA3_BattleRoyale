@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 25413208}
+  - component: {fileID: 25413210}
   - component: {fileID: 25413209}
   m_Layer: 0
   m_Name: Countdown
@@ -173,9 +174,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324b910c6ba541ca9e8a016c8bc2693f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownDuration: 3.99
+  syncMode: 0
+  syncInterval: 0.1
+  countdownDuration: 4.99
   countdownUI: {fileID: 1843428826}
   countdownNumberText: {fileID: 371759454}
+--- !u!114 &25413210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25413207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1569944706
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!224 &203043399 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 764931728659949480, guid: ec5d04625ff97c54db799815d19bceea, type: 3}

@@ -20,6 +20,9 @@ public class KeyboardInput : InputHandler
 
     public override void HandleInput()
     {
+        //null check (in case this gets called before Start was
+        if (axis == null || jumpCommand == null || moveHorizontallyCommand == null) return;
+
         //movement
         axis.axis = keyboardMap.Axis;
         moveHorizontallyCommand.Execute();

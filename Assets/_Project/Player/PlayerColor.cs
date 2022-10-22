@@ -10,6 +10,7 @@ public class PlayerColor : MonoBehaviour
     [SerializeField] private SkeletonAnimation anim;
     [SerializeField] private string slot = "playerColor";
     [SerializeField] private Color color;
+    [SerializeField] private bool setColorOnStart = true;
 
     public void SetColor(Color color)
     {
@@ -19,6 +20,10 @@ public class PlayerColor : MonoBehaviour
 
     public Color GetColor() => color;
 
-    private void Start() => SetColor(color);
+    private void Start()
+    {
+        if(setColorOnStart) SetColor(color);
+    }
+
     private void OnValidate() => SetColor(color);
 }

@@ -9,7 +9,6 @@ using UnityEngine.UI;
 namespace Doodlenite {
 public class UISetPlayerColor : MonoBehaviour
 {
-    //[SerializeField] private SetPlayerColor playerColor;
     [SerializeField] private Image colorPicker;
 
     private int slotIndex;
@@ -33,7 +32,7 @@ public class UISetPlayerColor : MonoBehaviour
             if(roomPlayer.index != slotIndex) continue;
             if(!roomPlayer.isLocalPlayer) continue;
             
-            var localPlayerColor = roomPlayer.GetComponentInChildren<PlayerColorNetwork>();
+            var localPlayerColor = roomPlayer.GetComponentInChildren<RoomPlayer>();
             localPlayerColor.CmdSetColor(colorPicker.color);
         }
     }

@@ -13,7 +13,7 @@ public class PositionRoomPlayerOnSlot : MonoBehaviour
     
     private void Start() => roomStartPositions = FindObjectsOfType<NetworkRoomStartPosition>();
 
-    //yes, it's not very performant to do this in Update, but doing it in Start did not work...
+    //yes, it's not very performant to do this in Update, but due to the room player staying alive in the main game scene I don't see a solution doing it with network callbacks
     private void Update()
     {
         int roomPlayerIndex = GetComponent<NetworkRoomPlayer>().index;
