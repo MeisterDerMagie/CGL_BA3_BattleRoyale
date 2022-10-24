@@ -8,8 +8,7 @@ public class NetworkPlatformMove : NetworkBehaviour
 {
     Vector3 start;
     Vector3 target;
-
-    [SerializeField, Range(1, 10)] private int speed = 1;
+    
     public GameObject gameManagerObject;
     private GameManager gameManager;
 
@@ -26,7 +25,12 @@ public class NetworkPlatformMove : NetworkBehaviour
     void FixedUpdate()
     {
         if(isServer && gameManager.gameHasStarted) {
-            transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
+            transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * gameManager.difficulty);
         }
+    }
+
+    public void SetManager(GameObject managerObjectIn)
+    {
+        gameManagerObject = managerObjectIn;
     }
 }
