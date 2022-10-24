@@ -63,7 +63,7 @@ public class GameManager : NetworkBehaviour
             gameTime += Time.deltaTime;
             spawnTimeTracker += Time.deltaTime;
             
-            CheckPlatformSpawn();
+            // CheckPlatformSpawn();
         }
         
     }
@@ -78,8 +78,6 @@ public class GameManager : NetworkBehaviour
             
             GameObject newPlatform = Instantiate(platformPrefab, new Vector3(spawnX, spawnHeight, 0), Quaternion.identity);
             newPlatform.GetComponent<PlatformWidth>().SetWidth(randomPlatformWidth);
-            NetworkPlatformMove platformMoveScript = newPlatform.GetComponent<NetworkPlatformMove>();
-            platformMoveScript.SetManager(gameObject);
             NetworkServer.Spawn(newPlatform);
             spawnTimeTracker = 0;
             
