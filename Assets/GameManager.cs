@@ -9,18 +9,26 @@ public class GameManager : NetworkBehaviour
     [SerializeField] public float gameTime = 0.0f;
     [SerializeField] public GameObject platformPrefab;
     
+    [SerializeField] public float MovingDuration = 3.0f;
+    [SerializeField] public float CurrentCameraPositionY = 0.0f;
+    
     private float spawnTimeTracker = 0.0f;
     private float spawnHeight = 15.0f;
-    private float spawnWidthBoundary = 14.0f;
+    // private float spawnWidthBoundary = 14.0f;
     private float lastSpawnXlocation = 0.0f;
     private Dictionary<int, float> difficultySpawnTimeMapping = new Dictionary<int, float>();
     private Dictionary<int, float> difficultySpawnTimeVarianceMapping = new Dictionary<int, float>();
     private Dictionary<int, float> difficultySpawnDistanceMapping = new Dictionary<int, float>();
     
+    private float TargetCameraPositionY = 0.0f;
+    private float StartCameraPositionY = 0.0f;
+    
     
     // Start is called before the first frame update
     void Start()
     {
+        TargetCameraPositionY = 200.0f;
+        
         difficultySpawnTimeMapping.Add(1, 2.0f);
         difficultySpawnTimeMapping.Add(2, 2.0f);
         difficultySpawnTimeMapping.Add(3, 2.0f);
@@ -63,7 +71,9 @@ public class GameManager : NetworkBehaviour
             gameTime += Time.deltaTime;
             spawnTimeTracker += Time.deltaTime;
             
-            // CheckPlatformSpawn();
+            CheckPlatformSpawn();
+            
+            CurrentCameraPositionY = Mathf.Lerp(StartCameraPositionY, TargetCameraPositionY, gameTime / MovingDuration);
         }
         
     }
@@ -74,7 +84,7 @@ public class GameManager : NetworkBehaviour
         {
             float randomPlatformWidth = Random.Range(0.0f, 1.0f);
             float spawnX = Random.Range(-14.0f, 14.0f);
-            
+            spawnHeight = CurrentCameraPositionY + 10.0f;
             
             GameObject newPlatform = Instantiate(platformPrefab, new Vector3(spawnX, spawnHeight, 0), Quaternion.identity);
             newPlatform.GetComponent<PlatformWidth>().SetWidth(randomPlatformWidth);
