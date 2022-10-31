@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Doodlenite {
-public class UISetPlayerColor : MonoBehaviour
+public class PlayerColorPicker : MonoBehaviour
 {
     [SerializeField] private Image colorPicker;
 
