@@ -10,7 +10,7 @@ public class ReadyUp : MonoBehaviour
 {
     private NetworkRoomManager roomManager;
 
-    [SerializeField] private Transform iconReady, iconNotReady, textReady, textUnready;
+    [SerializeField] private Transform iconReady, iconNotReady, textReady, textUnready, leaveLobbyButton;
     
     private void Start()
     {
@@ -24,11 +24,14 @@ public class ReadyUp : MonoBehaviour
             if(!roomPlayer.isLocalPlayer) continue;
             
             //set UI
+            //show when ready:   !roomPlayer.readyToBegin
+            //show when unready: roomPlayer.readyToBegin
             iconReady.gameObject.SetActive(!roomPlayer.readyToBegin);
-            textReady.gameObject.SetActive(roomPlayer.readyToBegin);
             iconNotReady.gameObject.SetActive(roomPlayer.readyToBegin);
+            textReady.gameObject.SetActive(roomPlayer.readyToBegin);
             textUnready.gameObject.SetActive(!roomPlayer.readyToBegin);
-            
+            leaveLobbyButton.gameObject.SetActive(roomPlayer.readyToBegin);
+
             //change state
             roomPlayer.CmdChangeReadyState(!roomPlayer.readyToBegin);
         }
