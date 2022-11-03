@@ -301,8 +301,8 @@ namespace Mirror
             base.OnServerDisconnect(conn);
 
 #if UNITY_SERVER
-            if (numPlayers < 1)
-                StopServer();
+            //if (numPlayers < 1)
+                //StopServer();
 #endif
         }
 
