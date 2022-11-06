@@ -13,6 +13,8 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
     [SerializeField, SyncVar] public GameState currentState;
     [SerializeField, SyncVar] public float gameTime;
+    [SerializeField, SyncVar] public float deadTime;
+
 
     [SerializeField]
     private int Difficulty
@@ -129,6 +131,13 @@ public class GameManager : NetworkBehaviour
                 currentCameraPositionY = Mathf.Lerp(startCameraPositionY, targetCameraPositionY, (gameTimeDifficulty) / movingDuration);
             }
             
+        }
+
+
+        // If midgame and there's one player left, the game is over, and the last player wins
+        if(currentState == GameState.MidGame && NetworkServer.connections.Count == 1)
+        {
+            Debug.Log(NetworkServer.connections[0] + " is the winner!");
         }
         
     }

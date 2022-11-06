@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 7362503191521838957}
   - component: {fileID: 7979604386251673043}
   - component: {fileID: 8954516905429519590}
+  - component: {fileID: 2375095735794504224}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -348,3 +349,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundedBoxCastSize: {x: 0.8, y: 0.3}
+--- !u!114 &2375095735794504224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d4909a72c3f2a42bb6c82606eb890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
