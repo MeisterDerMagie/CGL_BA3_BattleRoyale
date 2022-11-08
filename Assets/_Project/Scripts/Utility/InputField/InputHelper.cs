@@ -19,7 +19,12 @@ public class InputHelper : MonoBehaviour
     private bool UserSubmittedInputField => inputField.isFocused && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter));
     
     public Action<string> OnUserEnteredMessage = delegate(string _message) {  };
-    
+
+    private void Start()
+    {
+        ClearInputFieldAndFocusIt();
+    }
+
     private void Update()
     {
         //don't allow the user to start the input text with white space or submit empty text

@@ -12,24 +12,15 @@ namespace Doodlenite {
 //Das hier ist von Interesse für den Doodlenite Server, für die Clients ist ServerSettings.cs 
 public class ServerSetup : MonoBehaviour
 {
-    [SerializeField] private NetworkRoomManagerExt manager;
-    [SerializeField] private KcpTransport transport;
-
-    private static ServerSetup instance;
-    public static ServerSetup Instance => instance;
+    private NetworkRoomManagerExt manager;
+    private KcpTransport transport;
     
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        DontDestroyOnLoad(this);
-        
         #if UNITY_SERVER
+        manager = FindObjectOfType<NetworkRoomManagerExt>();
+        transport = FindObjectOfType<KcpTransport>();
+
         Dictionary<string, string> args = CommandLineController.CommandLineArguments;
         
         //port settings

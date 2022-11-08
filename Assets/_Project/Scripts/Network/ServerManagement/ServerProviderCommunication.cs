@@ -7,20 +7,43 @@ using FullSerializer;
 using kcp2k;
 using Mirror;
 using Newtonsoft.Json;
+using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Doodlenite {
 public class ServerProviderCommunication : MonoBehaviour
 {
-    [SerializeField] private string serverIp = "127.0.0.1";
-    [SerializeField] private int serverPort = 50880;
+    [Title("Change IP and Port in serverConfig.json in StreamingAssets folder of built game.")]
+    [SerializeField, ReadOnly] private string serverIp = "127.0.0.1";
+    [SerializeField, ReadOnly] private int serverPort = 50880;
     
     private static ServerProviderCommunication instance;
     public static ServerProviderCommunication Instance => instance;
 
     private NetworkRoomManagerExt manager;
+    private NetworkRoomManagerExt Manager
+    {
+        get
+        {
+            if (manager != null) return manager;
+            manager = FindObjectOfType<NetworkRoomManagerExt>();
+            if(manager == null) Debug.LogError("manager is null!");
+            return manager;
+        }
+    }
+
     private KcpTransport transport;
+    private KcpTransport Transport
+    {
+        get
+        {
+            if (transport != null) return transport;
+            transport = FindObjectOfType<KcpTransport>();
+            if(transport == null) Debug.LogError("transport is null!");
+            return transport;
+        }
+    }
 
     private ServerProviderClient client;
     private bool disconnectClientOnDestroy = true;
@@ -38,13 +61,6 @@ public class ServerProviderCommunication : MonoBehaviour
         }
 
         DontDestroyOnLoad(this);
-        
-        //get references
-        manager = FindObjectOfType<NetworkRoomManagerExt>();
-        transport = FindObjectOfType<KcpTransport>();
-        
-        if(manager == null) Debug.LogError("manager is null!");
-        if(transport == null) Debug.LogError("transport is null!");
         
         //start client
         client = new ServerProviderClient(serverIp, serverPort);
@@ -74,21 +90,21 @@ public class ServerProviderCommunication : MonoBehaviour
     public void ServerStarted()
     {
         var metadata = new Dictionary<object, object>();
-        metadata.Add("lobbyCode", manager.lobbyCode);
+        metadata.Add("lobbyCode", Manager.lobbyCode);
         ServerProviderClient.SendMessage("serverStarted", metadata);
     }
 
     public void ServerInGame()
     {
         var metadata = new Dictionary<object, object>();
-        metadata.Add("lobbyCode", manager.lobbyCode);
+        metadata.Add("lobbyCode", Manager.lobbyCode);
         ServerProviderClient.SendMessage("serverInGame", metadata);
     }
 
     public void ServerStopped()
     {
         var metadata = new Dictionary<object, object>();
-        metadata.Add("lobbyCode", manager.lobbyCode);
+        metadata.Add("lobbyCode", Manager.lobbyCode);
         ServerProviderClient.SendMessage("serverStopped", metadata);
     }
     #endregion
@@ -98,16 +114,16 @@ public class ServerProviderCommunication : MonoBehaviour
     public void ClientCanJoin(ushort _port, string _lobbyCode)
     {
         //set ip
-        manager.networkAddress = serverIp;
+        Manager.networkAddress = serverIp;
         
         //set port
-        transport.Port = _port;
+        Transport.Port = _port;
         
         //set lobby code
-        manager.lobbyCode = _lobbyCode;
+        Manager.lobbyCode = _lobbyCode;
         
         //start client
-        manager.StartClient();
+        Manager.StartClient();
     }
     
     //-- Provider -> Server --

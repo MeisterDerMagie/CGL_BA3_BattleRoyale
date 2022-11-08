@@ -7,13 +7,13 @@ using Mirror;
 using UnityEngine;
 
 namespace Doodlenite {
-public class JoinGame : MonoBehaviour
+public class JoinLocalGame : MonoBehaviour
 {
     [SerializeField] private GameObject loadingScreenPrefab;
 
     private NetworkManager manager;
     
-    private void Awake() => manager = GetComponent<NetworkManager>();
+    private void Awake() => manager = FindObjectOfType<NetworkManager>();
     public void Join()
     {
         Timing.RunCoroutine(_Join());
