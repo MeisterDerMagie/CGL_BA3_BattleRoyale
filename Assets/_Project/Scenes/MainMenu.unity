@@ -332,7 +332,7 @@ MonoBehaviour:
   offlineScene: Assets/_Project/Scenes/MainMenu.unity
   onlineScene: Assets/_Project/Scenes/Lobby.unity
   transport: {fileID: 23255025}
-  networkAddress: 91.3.56.87
+  networkAddress: localhost
   maxConnections: 6
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 1875867024689135980, guid: 73d883706256dff45b95a79ad631d1a4, type: 3}
@@ -341,7 +341,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 5976966208757574527, guid: c44b62be9da7420418200e54d632867b, type: 3}
   showRoomGUI: 0
-  minPlayers: 2
+  minPlayers: 1
   roomPlayerPrefab: {fileID: 3259291455494407790, guid: 0dc68a3ea45361843ac069a509b12ac9, type: 3}
   RoomScene: Assets/_Project/Scenes/Lobby.unity
   GameplayScene: Assets/_Project/Scenes/Game.unity
@@ -10559,7 +10559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d8eccf6bef24a35924cc7995c42aaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIp: 91.3.56.87
+  serverIp: 127.0.0.1
   serverPort: 50880
 --- !u!1 &1146707467
 GameObject:

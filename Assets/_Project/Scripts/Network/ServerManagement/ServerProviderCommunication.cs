@@ -1,9 +1,12 @@
 ﻿//(c) copyright by Martin M. Klöckener
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Doodlenite.ServerProvider;
+using FullSerializer;
 using kcp2k;
 using Mirror;
+using Newtonsoft.Json;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,7 +27,9 @@ public class ServerProviderCommunication : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null) instance = this;
+       LoadServerConfig();
+
+       if(instance == null) instance = this;
         else
         {
             disconnectClientOnDestroy = false;
@@ -92,6 +97,9 @@ public class ServerProviderCommunication : MonoBehaviour
     //-- Provider -> Client --
     public void ClientCanJoin(ushort _port, string _lobbyCode)
     {
+        //set ip
+        manager.networkAddress = serverIp;
+        
         //set port
         transport.Port = _port;
         
@@ -105,5 +113,32 @@ public class ServerProviderCommunication : MonoBehaviour
     //-- Provider -> Server --
         
     #endregion
+
+    private void LoadServerConfig()
+    {
+        //serverConfig.json should look like this: {"IP":"127.0.0.1","Port":"50880"}
+        string encryptedJson = File.ReadAllText(Application.dataPath + "/StreamingAssets/serverConfig.json");
+        
+        Dictionary<string, string>? content = JsonConvert.DeserializeObject<Dictionary<string, string>>(encryptedJson);
+        if(content == null)
+        {
+            Debug.LogWarning("Could not load serverConfig. Will use localhost instead.");
+            return;
+        }
+
+        if (content.ContainsKey("IP") && content.ContainsKey("Port"))
+        {
+            serverIp = content["IP"];
+            serverPort = int.Parse(content["Port"]);
+
+            Debug.Log($"Loaded serverProvider IP: {serverIp}");
+            Debug.Log($"Loaded serverProvider Port: {serverPort.ToString()}");
+        }
+        else
+        {
+            Debug.LogWarning("Could not load serverConfig. Will use localhost instead.");
+            return;
+        }
+    }
 }
 }
