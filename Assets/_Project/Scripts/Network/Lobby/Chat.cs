@@ -105,7 +105,6 @@ public class Chat : NetworkBehaviour
         foreach (NetworkRoomPlayer roomPlayer in manager.roomSlots)
         {
             string playerName = roomPlayer.GetComponent<RoomPlayerData>().PlayerName;
-            if (playerName == string.Empty) playerName = $"Player {roomPlayer.index}";
             
             //update names of connected players and still keep old names of disconnected players
             if (playerNames.ContainsKey(roomPlayer.netId))

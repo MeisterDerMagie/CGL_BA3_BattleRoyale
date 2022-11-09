@@ -330,7 +330,7 @@ MonoBehaviour:
   minPlayers: 1
   roomPlayerPrefab: {fileID: 3259291455494407790, guid: 0dc68a3ea45361843ac069a509b12ac9, type: 3}
   RoomScene: Assets/_Project/Scenes/Lobby.unity
-  GameplayScene: Assets/_Project/Scenes/Game.unity
+  GameplayScene: Assets/_Project/Scenes/GameMartin.unity
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0

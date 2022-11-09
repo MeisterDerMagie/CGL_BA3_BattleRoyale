@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        inputHandler.HandleInput();
+        if(inputHandler != null) inputHandler.HandleInput();
     }
 
     public void SetInputProvider(InputHandler _inputHandler)

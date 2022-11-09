@@ -275,9 +275,7 @@ GameObject:
   - component: {fileID: 7362503191521838957}
   - component: {fileID: 7979604386251673043}
   - component: {fileID: 8954516905429519590}
-  - component: {fileID: 5295794474114905704}
-  - component: {fileID: 6507775812878441501}
-  - component: {fileID: 1955317531405702870}
+  - component: {fileID: 2375095735794504224}
   - component: {fileID: 4883216191529774271}
   m_Layer: 6
   m_Name: Player
@@ -399,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  isAlive: 1
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 1}
   anim: {fileID: 1875867023741950710}
@@ -478,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundedBoxCastSize: {x: 0.8, y: 0.3}
---- !u!114 &5295794474114905704
+--- !u!114 &2375095735794504224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -487,55 +486,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1875867024689135980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831ef9022ba614a14b79e5c2f9f6f98e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sampleMode: 1
-  showPosition: 0
-  showPosition_x: 1
-  showPosition_y: 1
-  positionMode: 2
-  positionMin: Infinity
-  positionMax: -Infinity
-  showRotation: 0
-  rotationClamp: 1
-  rotationMode: 1
-  rotationMin: 0
-  rotationMax: 360
-  showVelocity: 1
-  showVelocity_x: 1
-  showVelocity_y: 1
-  velocityMode: 2
-  velocityMin: Infinity
-  velocityMax: -Infinity
-  showAngularVelocity: 0
-  angularVelocityMode: 2
-  angularVelocityMin: Infinity
-  angularVelocityMax: -Infinity
---- !u!114 &6507775812878441501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875867024689135980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c622aea3eee141039a961641a831113f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
---- !u!114 &1955317531405702870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875867024689135980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72e80754d78f4567abe2cec836710b05, type: 3}
+  m_Script: {fileID: 11500000, guid: d5d4909a72c3f2a42bb6c82606eb890f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0

@@ -18,9 +18,9 @@ public class RoomPlayerData : NetworkBehaviour
     
     //public accessors
     public Color PlayerColor => playerColor;
-    public string PlayerName => playerName;
-    
-    
+    public string PlayerName => playerName == string.Empty ? $"Player {GetComponent<NetworkRoomPlayer>().index}" : playerName;
+
+
     //sncVar hooks
     private void OnColorChanged(Color _oldValue, Color _newValue) => OnValuesChanged?.Invoke();
     private void OnPlayerNameChanged(string _oldValue, string _newValue) => OnValuesChanged?.Invoke();

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/LoadingScreen.unity
     guid: 96aa1c799d2d0644c98a0649f3a5b719
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameMartin.unity
+    guid: e24cd70d5a06c6e4d9e00e86f80e1bec
   m_configObjects: {}
