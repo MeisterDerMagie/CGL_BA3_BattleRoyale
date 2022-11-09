@@ -89,11 +89,19 @@ public class GameStartCountdown : NetworkBehaviour
         //hide countdown
         HideCountdownUI();
         
+        //inform server provider about the started game
+        ServerProviderCommunication.Instance.ServerInGame();
+        
         //call callback to start the game
         callback?.Invoke();
     }
 
-    private void HideCountdownUI() => countdownUI.gameObject.SetActive(false);
+    private void HideCountdownUI()
+    {
+        if (countdownUI.gameObject == null) return;
+        countdownUI.gameObject.SetActive(false);
+    }
+
     private void ShowCountdownUI() => countdownUI.gameObject.SetActive(true);
     private string CountdownToString() => Mathf.Floor(countdown).ToString(CultureInfo.InvariantCulture);
 }

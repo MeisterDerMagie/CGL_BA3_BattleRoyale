@@ -6,18 +6,25 @@ namespace Doodlenite {
 public class DeathScreen : MonoBehaviour
 {
     [SerializeField] private Transform deathScreen;
+    [SerializeField] private Transform leaveMatchScreen;
     
     private void Start()
     {
         Player.OnPlayerDied += OnPlayerDied;
         deathScreen.gameObject.SetActive(false);
+        leaveMatchScreen.gameObject.SetActive(false);
+
     }
 
     private void OnDestroy() => Player.OnPlayerDied -= OnPlayerDied;
 
     private void OnPlayerDied(Player _player)
     {
+        //show death screen
         if(_player.isLocalPlayer) ShowDeathScreen();
+        
+        //show leave match screen
+        if(!leaveMatchScreen.gameObject.activeSelf) leaveMatchScreen.gameObject.SetActive(true);
     }
 
     private void ShowDeathScreen()

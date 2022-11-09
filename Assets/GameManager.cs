@@ -3,18 +3,19 @@ using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Doodlenite;
+using Doodlenite.ServerProvider;
 
 
 public class GameManager : NetworkBehaviour
 {
-    public enum GameState {Preparation, Warmup, EarlyGame, MidGame, EndGame};
+    public enum GameState {Preparation, Warmup, EarlyGame, MidGame, EndGame, GameOver};
 
     
     public static GameManager Instance;
     [SerializeField, SyncVar] public GameState currentState;
     [SerializeField, SyncVar] public float gameTime;
     [SerializeField, SyncVar] public float deadTime;
-
 
     [SerializeField]
     private int Difficulty
@@ -33,6 +34,8 @@ public class GameManager : NetworkBehaviour
                     return 4;
                 case GameState.EndGame:
                     return 6;
+                case GameState.GameOver:
+                    return -1;
             }
             return Difficulty;
         }
@@ -57,6 +60,8 @@ public class GameManager : NetworkBehaviour
     private float targetCameraPositionY;
     private float targetDeadzoneDistance;
     private float startCameraPositionY = 2.0f;
+
+    private float timeSinceGameEnded;
 
 
     // Start is called before the first frame update
@@ -108,9 +113,19 @@ public class GameManager : NetworkBehaviour
         // difficultySpawnDistanceMapping.Add(9, 7.0f);
         // difficultySpawnDistanceMapping.Add(10, 7.0f);
 
-        var xx = GetComponent<BackgroundManager>();
+        Player.OnPlayerWon += HandleWin;
     }
 
+    private void OnDestroy()
+    {
+        Player.OnPlayerWon -= HandleWin;
+    }
+
+    private void HandleWin(Player _player)
+    {
+        currentState = GameState.GameOver;
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -130,16 +145,19 @@ public class GameManager : NetworkBehaviour
                 gameTimeDifficulty += Time.deltaTime * Difficulty;
                 currentCameraPositionY = Mathf.Lerp(startCameraPositionY, targetCameraPositionY, (gameTimeDifficulty) / movingDuration);
             }
-            
-        }
-
-
-        // If midgame and there's one player left, the game is over, and the last player wins
-        if(currentState == GameState.MidGame && NetworkServer.connections.Count == 1)
-        {
-            Debug.Log(NetworkServer.connections[0] + " is the winner!");
         }
         
+        //shutdown server 1 minute after the game finished, even if there are still players connected
+        #if UNITY_SERVER
+        if (currentState is GameState.GameOver) timeSinceGameEnded += Time.deltaTime;
+        if (timeSinceGameEnded > 60f)
+        {
+            Debug.Log("The game has ended one minute ago, shut down server.");
+            ServerProviderCommunication.Instance.ServerStopped();
+            ServerProviderClient.DisconnectClient();
+            Application.Quit();
+        }
+        #endif
     }
 
     private void CheckGameState()
@@ -173,7 +191,7 @@ public class GameManager : NetworkBehaviour
             startDeadzoneDistance = Mathf.Lerp(startDeadzoneDistance, -50.0f, Time.deltaTime / stateDurations[GameState.Warmup]);
             deadZoneDistance = startDeadzoneDistance;
         }
-        else if (currentState != GameState.Warmup && currentState != GameState.Preparation)
+        else if (currentState != GameState.Warmup && currentState != GameState.Preparation && currentState != GameState.GameOver )
         {
             deadZoneDistance = Mathf.Lerp(startDeadzoneDistance, targetDeadzoneDistance, (gameTimeDifficulty) / movingDuration);
             currentDeadZonePositionY = currentCameraPositionY + deadZoneDistance;
@@ -182,6 +200,8 @@ public class GameManager : NetworkBehaviour
 
     private void CheckPlatformSpawn()
     {
+        if (currentState is GameState.GameOver) return;
+        
         if (spawnTimeTracker >= difficultySpawnTimeMapping[Difficulty] && platformPrefab)
         {
             float randomPlatformWidth = Random.Range(0.0f, 1.0f);

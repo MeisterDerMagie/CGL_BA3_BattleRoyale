@@ -9,13 +9,11 @@ public class PlayerDeath : NetworkBehaviour
     private float timeSpentInDeadZone = 0;
     private float deadTime;
 
-    // Start is called before the first frame update
     private void Start()
     {
         deadTime = GameManager.Instance.deadTime;
     }
-
-    // Update is called once per frame
+    
     private void Update()
     {
         if (!isServer) return;
@@ -24,14 +22,11 @@ public class PlayerDeath : NetworkBehaviour
         if (!(timeSpentInDeadZone >= deadTime)) return;
 
         GetComponent<Player>().isAlive = false;
+        
+        //if we're the server the isAlive hook will not get called, so call that method manually
+        if(isServer) GetComponent<Player>().OnPlayerAliveStateChanged(true, false);
+        
         Destroy(this);
-
-        //GetComponent<Player>().enabled = false;
-        //GetComponent<InputManager>().enabled = false;
-        //GetComponent<PlayerMovement>().enabled = false;
-        //GetComponent<KeyboardInput>().enabled = false;
-        //if(NetworkServer.connections.Count > 1) connectionToServer.Disconnect();
-        //Debug.Log("I dies");
     }
 
     private void OnTriggerStay2D(Collider2D collision)

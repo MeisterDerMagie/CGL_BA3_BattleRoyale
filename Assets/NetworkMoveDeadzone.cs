@@ -13,8 +13,21 @@ public class NetworkMoveDeadzone : MonoBehaviour
     {
         if (!GameManager.Instance)
             return;
-        if (GameManager.Instance.currentState == GameManager.GameState.Preparation ||
-            GameManager.Instance.currentState == GameManager.GameState.Warmup)
+        
+        //remove collider if the game is over to prevent the winner from dying
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver)
+        {
+            var deadZoneCollider = GetComponentInChildren<BoxCollider2D>();
+            if (deadZoneCollider == null)
+                return;
+            else
+                Destroy(deadZoneCollider);
+        }
+        
+        if (GameManager.Instance.currentState is
+            GameManager.GameState.Preparation or
+            GameManager.GameState.Warmup or
+            GameManager.GameState.GameOver)
             return;
 
         float updateInterval = GameManager.Instance.GetComponent<NetworkBehaviour>().syncInterval;

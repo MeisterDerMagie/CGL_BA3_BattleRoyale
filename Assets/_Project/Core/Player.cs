@@ -20,6 +20,7 @@ public class Player : NetworkBehaviour
     
     public Action OnPlayerSettingsChanged = delegate{};
     public static Action<Player> OnPlayerDied = delegate(Player _player) {  };
+    public static Action<Player> OnPlayerWon = delegate(Player _player) {  };
     
     public PlayerAnimations anim;
     public PlayerMovement playerMovement;
@@ -27,7 +28,7 @@ public class Player : NetworkBehaviour
     //inform the UI about changes to the player settings
     private void OnPlayerNameChanged(string _oldValue, string _newValue) => OnPlayerSettingsChanged?.Invoke();
     private void OnPlayerColorChanged(Color _oldValue, Color _newValue) => OnPlayerSettingsChanged?.Invoke();
-    private void OnPlayerAliveStateChanged(bool _oldValue, bool _newValue)
+    public void OnPlayerAliveStateChanged(bool _oldValue, bool _newValue)
     {
         OnPlayerSettingsChanged?.Invoke();
         OnPlayerDied?.Invoke(this);

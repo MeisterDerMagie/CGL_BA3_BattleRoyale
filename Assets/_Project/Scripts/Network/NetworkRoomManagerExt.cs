@@ -10,9 +10,9 @@ namespace Doodlenite {
 public class NetworkRoomManagerExt : NetworkRoomManager
 {
     public string lobbyCode = string.Empty;
-    [HideInInspector] public List<Player> players = new List<Player>();
-    public List<Player> LivingPlayers => players.Where(player => player.isAlive).ToList();
-    public List<Player> DeadPlayers => players.Where(player => !player.isAlive).ToList();
+    public static List<Player> players = new List<Player>();
+    public static List<Player> LivingPlayers => players.Where(player => player.isAlive).ToList();
+    public static List<Player> DeadPlayers => players.Where(player => !player.isAlive).ToList();
 
     public override void Start()
     {
@@ -69,6 +69,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     {
         Debug.Log($"{_player.playerName} died.");
         UpdatePlayerList();
+        CheckForWin();
     }
 
     private void UpdatePlayerList()
@@ -82,6 +83,12 @@ public class NetworkRoomManagerExt : NetworkRoomManager
             if (players.Contains(player)) continue;
             players.Add(player);
         }
+    }
+
+    private void CheckForWin()
+    {
+        if(LivingPlayers.Count <= 0) Debug.LogError("Oops, something went wrong. Nobody won. How did this happen?");
+        if(LivingPlayers.Count == 1) Player.OnPlayerWon?.Invoke(LivingPlayers[0]);
     }
 }
 }
