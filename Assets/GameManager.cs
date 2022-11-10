@@ -1,20 +1,84 @@
-using System;
+//(c) copyright by by Patrick Handwerk, CGL Th Koeln, Matrikelnummer 11135936
+
 using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
+// General game Manager and synchronous game state replication to all clients. Determines the current state of the game, spawns level platforms and
+// determines the current cameras and dead zone positions Y as SyncVars to all clients.
 public class GameManager : NetworkBehaviour
 {
+    // GameState enum for the different stages of the game play loop
     public enum GameState {Preparation, Warmup, EarlyGame, MidGame, EndGame};
-
     
+    // Singleton GameManager to access syncVars and general game state in all areas of the code
     public static GameManager Instance;
-    [SerializeField, SyncVar] public GameState currentState;
-    [SerializeField, SyncVar] public float gameTime;
+    
+    // Reference to the platform prefab to spawn in the level
+    public GameObject platformPrefab;
 
-    [SerializeField]
+    #region Properties
+
+    public GameState CurrentState
+    {
+        get => currentState;
+        set => currentState = value;
+    }
+    
+    public float GameTime
+    {
+        get => gameTime;
+        set => gameTime = value;
+    }
+    
+    public float DeadZoneDistance
+    {
+        get => deadZoneDistance;
+        set => deadZoneDistance = value;
+    }
+    
+    public float CurrentCameraPositionY
+    {
+        get => currentCameraPositionY;
+        set => currentCameraPositionY = value;
+    }
+
+    public float CurrentDeadZonePositionY
+    {
+        get => currentDeadZonePositionY;
+        set => currentDeadZonePositionY = value;
+    }
+
+    public float StartDeadzoneDistance
+    {
+        get => startDeadzoneDistance;
+        set => startDeadzoneDistance = value;
+    }
+
+    #endregion
+
+    #region Private members
+
+    // Stores the current phase of the game play loop
+    [SyncVar] private GameState currentState;
+    
+    // Timer counting upwards as soon as the level starts. used to change the game State after predetermined times
+    [SyncVar] private float gameTime;
+    
+    // Sync Var to store the current distance of the dead zone to the camera. Needs to be the same on all clients.
+    [SyncVar] private float deadZoneDistance;
+    
+    // SyncVar for the current position of the camera to synchronize the position of the view to all clients
+    [SyncVar] private float currentCameraPositionY;
+    
+    // Synchronizes the current Y position of the dead zone to all clients
+    [SyncVar] private float currentDeadZonePositionY;
+    // Synchronizes the initial dead zone position Y to all clients
+    [SyncVar] private float startDeadzoneDistance = -17.0f;
+    
+
+    // Difficulty maps an integer value to "currentGameState"
     private int Difficulty
     {
         get
@@ -35,27 +99,34 @@ public class GameManager : NetworkBehaviour
             return Difficulty;
         }
     }
-    
-    [SerializeField] public GameObject platformPrefab;
-    [SerializeField, SyncVar] public float deadZoneDistance;
-    [SerializeField, SyncVar] public float currentCameraPositionY;
-    [SerializeField, SyncVar] public float currentDeadZonePositionY;
-    [SerializeField, SyncVar] public float startDeadzoneDistance = -17.0f;
-    
-    [SerializeField] private float movingDuration = 240.0f;
-    
+
+    // Total duration of the match and total interpolation time between initial camera position Y and final camera position Y
+    private float movingDuration = 240.0f;
+    // Tracks time between platform spawns
     private float spawnTimeTracker;
+    // Tracks time between individual game sates
     private float stateTimeTracker;
+    // Game Time * difficulty for speed up of the movement of the camera
     private float gameTimeDifficulty;
+    // Determines the height distance from the center of the view at which platforms will be spawned
     private float spawnHeight = 15.0f;
+    
+    // Stores the different times of each game state
     private readonly Dictionary<GameState, float> stateDurations = new Dictionary<GameState, float>();
-
+    
+    // Maps a spawn time for spawning platforms to the current difficulty of the game
     private readonly Dictionary<int, float> difficultySpawnTimeMapping = new Dictionary<int, float>();
-
+    
+    // Target position Y for the camera to rise towards unitl the end of a match
     private float targetCameraPositionY;
+    // Target distance to interpolate the position Y of the dead zone towards
     private float targetDeadzoneDistance;
+    // Initial position Y of the camera
     private float startCameraPositionY = 2.0f;
+    
+    #endregion
 
+    #region Functions
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +138,7 @@ public class GameManager : NetworkBehaviour
         deadZoneDistance = startDeadzoneDistance;
         
         stateDurations.Add(GameState.Preparation, 10.0f);
-        stateDurations.Add(GameState.Warmup, 20.0f);
+        stateDurations.Add(GameState.Warmup, 60.0f);
         stateDurations.Add(GameState.EarlyGame, 30.0f);
         stateDurations.Add(GameState.MidGame, 40.0f);
         stateDurations.Add(GameState.EndGame, 60.0f);
@@ -83,30 +154,6 @@ public class GameManager : NetworkBehaviour
         difficultySpawnTimeMapping.Add(8, startingSpawnTime + 0.0f);
         difficultySpawnTimeMapping.Add(9, startingSpawnTime + 0.0f);
         difficultySpawnTimeMapping.Add(10, startingSpawnTime + 0.0f);
-        
-        // difficultySpawnTimeVarianceMapping.Add(1, 0.15f);
-        // difficultySpawnTimeVarianceMapping.Add(2, 0.15f);
-        // difficultySpawnTimeVarianceMapping.Add(3, 0.0f);
-        // difficultySpawnTimeVarianceMapping.Add(4, 0.15f);
-        // difficultySpawnTimeVarianceMapping.Add(5, 0.25f);
-        // difficultySpawnTimeVarianceMapping.Add(6, 0.25f);
-        // difficultySpawnTimeVarianceMapping.Add(7, 0.5f);
-        // difficultySpawnTimeVarianceMapping.Add(8, 0.5f);
-        // difficultySpawnTimeVarianceMapping.Add(9, 0.5f);
-        // difficultySpawnTimeVarianceMapping.Add(10, 0.75f);
-        //
-        // difficultySpawnDistanceMapping.Add(1, 3.0f);
-        // difficultySpawnDistanceMapping.Add(2, 3.0f);
-        // difficultySpawnDistanceMapping.Add(3, 4.0f);
-        // difficultySpawnDistanceMapping.Add(4, 4.0f);
-        // difficultySpawnDistanceMapping.Add(5, 4.0f);
-        // difficultySpawnDistanceMapping.Add(6, 5.0f);
-        // difficultySpawnDistanceMapping.Add(7, 5.0f);
-        // difficultySpawnDistanceMapping.Add(8, 6.0f);
-        // difficultySpawnDistanceMapping.Add(9, 7.0f);
-        // difficultySpawnDistanceMapping.Add(10, 7.0f);
-
-        var xx = GetComponent<BackgroundManager>();
     }
 
     // Update is called once per frame
@@ -132,7 +179,8 @@ public class GameManager : NetworkBehaviour
         }
         
     }
-
+    
+    // Checks the current "stateTimeTracker" value against the current game states duration stored in "stateDurations"
     private void CheckGameState()
     {
         if (currentState == GameState.Preparation && stateTimeTracker >= stateDurations[GameState.Preparation])
@@ -156,7 +204,8 @@ public class GameManager : NetworkBehaviour
             stateTimeTracker = 0.0f;
         }
     }
-
+    
+    // Depending on the current game state moves the dead zone upwards towards the players
     private void UpdateDeadzoneDistance()
     {
         if (currentState == GameState.Warmup)
@@ -170,7 +219,8 @@ public class GameManager : NetworkBehaviour
             currentDeadZonePositionY = currentCameraPositionY + deadZoneDistance;
         }
     }
-
+    
+    // Checks the current "spawnTimeTracker" value against the current time to spawn mapped in "difficultySpawnTimeMapping" depending on the current difficulty
     private void CheckPlatformSpawn()
     {
         if (spawnTimeTracker >= difficultySpawnTimeMapping[Difficulty] && platformPrefab)
@@ -185,4 +235,6 @@ public class GameManager : NetworkBehaviour
             spawnTimeTracker = 0;
         }
     }
+    
+    #endregion
 }

@@ -10,7 +10,7 @@ public class PlatformWidth : MonoBehaviour
     [SerializeField, HideInInspector] private float widthBefore = -1f;
     [SerializeField] private GameObject[] platforms;
 
-    private void Start() => SetWidth(width);
+    // private void Start() => SetWidth(width);
 
     public void SetWidth(float width)
     {
