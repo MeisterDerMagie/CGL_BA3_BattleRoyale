@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 049c6bc75e2c1544897c81569df6cc42, type: 3}
+  m_Name: BasicGameplay
+  m_EditorClassIdentifier: 
+  totalGameDuration: 240
+  stateDurations:
+  - state: 0
+    duration: 15
+  - state: 1
+    duration: 40
+  - state: 2
+    duration: 70
+  - state: 3
+    duration: 70
+  - state: 4
+    duration: 45

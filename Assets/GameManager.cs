@@ -17,6 +17,9 @@ public class GameManager : NetworkBehaviour
     
     // Reference to the platform prefab to spawn in the level
     public GameObject platformPrefab;
+    
+    // Reference to scriptable objects gameplay setting data
+    public GameplayData gameplaySetting;
 
     #region Properties
 
