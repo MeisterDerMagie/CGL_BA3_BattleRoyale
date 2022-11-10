@@ -25,6 +25,11 @@ public class Player : NetworkBehaviour
     public PlayerAnimations anim;
     public PlayerMovement playerMovement;
 
+    private void Start()
+    {
+        NetworkRoomManagerExt.OnNewPlayerSpawned?.Invoke();
+    }
+
     //inform the UI about changes to the player settings
     private void OnPlayerNameChanged(string _oldValue, string _newValue) => OnPlayerSettingsChanged?.Invoke();
     private void OnPlayerColorChanged(Color _oldValue, Color _newValue) => OnPlayerSettingsChanged?.Invoke();

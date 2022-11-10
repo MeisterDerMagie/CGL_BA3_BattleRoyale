@@ -8,7 +8,8 @@ using UnityEngine;
 public class NetworkMoveDeadzone : MonoBehaviour
 {
     private Tween tween;
-    
+    [SerializeField] private BoxCollider2D deadZoneCollider;
+        
     private void Update()
     {
         if (!GameManager.Instance)
@@ -17,7 +18,6 @@ public class NetworkMoveDeadzone : MonoBehaviour
         //remove collider if the game is over to prevent the winner from dying
         if (GameManager.Instance.currentState == GameManager.GameState.GameOver)
         {
-            var deadZoneCollider = GetComponentInChildren<BoxCollider2D>();
             if (deadZoneCollider == null)
                 return;
             else

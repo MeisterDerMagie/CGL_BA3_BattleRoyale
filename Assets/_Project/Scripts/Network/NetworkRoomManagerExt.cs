@@ -14,10 +14,36 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     public static List<Player> LivingPlayers => players.Where(player => player.isAlive).ToList();
     public static List<Player> DeadPlayers => players.Where(player => !player.isAlive).ToList();
 
+    private static Player localPlayer;
+    public static Player LocalPlayer
+    {
+        get
+        {
+            if (localPlayer != null) return localPlayer;
+            
+            var p = FindObjectsOfType<Player>();
+            foreach (var player in p)
+            {
+                if (player.isLocalPlayer) localPlayer = player;
+            }
+            return localPlayer;
+        }
+    }
+
+    public static Action OnNewPlayerSpawned = delegate {  };
+
     public override void Start()
     {
         base.Start();
         Player.OnPlayerDied += OnPlayerDied;
+        OnNewPlayerSpawned += UpdatePlayerList;
+    }
+    
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        Player.OnPlayerDied -= OnPlayerDied;
+        OnNewPlayerSpawned -= UpdatePlayerList;
     }
 
     public override void OnRoomServerPlayersReady()
@@ -56,13 +82,6 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     {
         base.OnClientConnect();
         UpdatePlayerList();
-    }
-
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        Player.OnPlayerDied -= OnPlayerDied;
-
     }
 
     private void OnPlayerDied(Player _player)
