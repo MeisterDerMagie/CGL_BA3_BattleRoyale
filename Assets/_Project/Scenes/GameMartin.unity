@@ -6241,7 +6241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 887858303}
-  backgroundTile: {fileID: 0}
+  tile: {fileID: 1713004537}
+  gridSize: 40.96
 --- !u!4 &383805368
 Transform:
   m_ObjectHideFlags: 0
@@ -7197,7 +7198,6 @@ GameObject:
   m_Component:
   - component: {fileID: 766816203}
   - component: {fileID: 766816205}
-  - component: {fileID: 766816204}
   - component: {fileID: 766816206}
   m_Layer: 0
   m_Name: GameManager
@@ -7221,29 +7221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &766816204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766816202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9f0bb485bf4ec4ba917e0a1ff3d756, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  currentState: 0
-  gameTime: 0
-  deadTime: 1
-  platformPrefab: {fileID: 5976966208757574527, guid: c44b62be9da7420418200e54d632867b, type: 3}
-  deadZoneDistance: 0
-  currentCameraPositionY: 0
-  currentDeadZonePositionY: 0
-  startDeadzoneDistance: -20
-  movingDuration: 240
 --- !u!114 &766816205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7270,12 +7247,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 766816202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eec4331aba47b745b96ef33704188ff, type: 3}
+  m_Script: {fileID: 11500000, guid: cb2a8419657b4655b1aa4d5272a8186f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameCamera: {fileID: 887858301}
-  backgroundActive: {fileID: 1713004535}
-  backgroundWaiting: {fileID: 1116888325}
+  syncMode: 0
+  syncInterval: 0.1
+  preGameCountdownDuration: 3
+  maxDifficulty: 5
+  difficultyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  difficultyIncrease: 0
+  deadzone: {fileID: 776317899}
 --- !u!1 &776317895
 GameObject:
   m_ObjectHideFlags: 0
@@ -7286,7 +7290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 776317896}
   - component: {fileID: 776317898}
-  - component: {fileID: 776317897}
+  - component: {fileID: 776317899}
   m_Layer: 0
   m_Name: DeadlyZone
   m_TagString: Untagged
@@ -7312,19 +7316,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &776317897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776317895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba18bcc0a3af0af4d97011cc8c0fc06c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deadZoneCollider: {fileID: 1536667360}
 --- !u!114 &776317898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7342,6 +7333,22 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!114 &776317899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776317895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a3e39b43d344c66bad91fdc74e38503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  speed: 1
+  deadZoneCollider: {fileID: 1536667360}
 --- !u!1 &887858301
 GameObject:
   m_ObjectHideFlags: 0
@@ -7357,7 +7364,6 @@ GameObject:
   - component: {fileID: 887858305}
   - component: {fileID: 887858307}
   - component: {fileID: 887858309}
-  - component: {fileID: 887858310}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7424,7 +7430,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887858301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7508,29 +7514,6 @@ MonoBehaviour:
   _targetAspectRatio: 1.7777778
   VerticalAlignment: 0
   HorizontalAlignment: 0
---- !u!114 &887858310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887858301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c17020d0b9b514c5ea3b8251d0c4ee6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pc2D: {fileID: 887858305}
-  _serializedAxis: 0
-  Progressive: 0
-  SpeedMultiplier: 1
-  TransitionSmoothness: 0.1
-  MaintainInfluenceOnStop: 1
-  MovementThreshold: {x: 0, y: 0}
-  LeftFocus: 0.001
-  RightFocus: 0.001
-  TopFocus: 0.33
-  BottomFocus: 0.33
 --- !u!1 &926568859
 GameObject:
   m_ObjectHideFlags: 0
@@ -8159,7 +8142,7 @@ GameObject:
   - component: {fileID: 1116888326}
   - component: {fileID: 1116888327}
   m_Layer: 0
-  m_Name: lower
+  m_Name: tile2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10069,7 +10052,7 @@ GameObject:
   - component: {fileID: 1713004536}
   - component: {fileID: 1713004537}
   m_Layer: 0
-  m_Name: upper
+  m_Name: tile1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

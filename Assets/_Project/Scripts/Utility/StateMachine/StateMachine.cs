@@ -26,7 +26,7 @@ public class StateMachine
         pauseWithGameTime = _pauseWithGameTime;
         
         //run state machine
-        //Timing.RunCoroutine(_Tick());
+        //Timing.RunCoroutine(Tick());
     }
 
     public void Tick()

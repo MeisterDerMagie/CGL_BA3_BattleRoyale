@@ -83,7 +83,13 @@ namespace Mirror.Experimental
             if (IgnoreSync) { return; }
 
             target.velocity = Vector3.Lerp(target.velocity, targetVelocity, lerpVelocityAmount);
-            target.position = Vector3.Lerp(target.position, targetPosition, lerpPositionAmount);
+            
+            //if screen edge teleport: don't lerp
+            if( Mathf.Abs(targetPosition.x - target.position.x) < 10f)
+                target.position = Vector3.Lerp(target.position, targetPosition, lerpPositionAmount);
+            else
+                target.position = targetPosition;
+
             // add velocity to position as position would have moved on server at that velocity
             target.position += target.velocity * Time.fixedDeltaTime;
 

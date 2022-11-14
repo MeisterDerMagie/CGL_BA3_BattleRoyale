@@ -66,6 +66,11 @@ public class CameraTargeting : MonoBehaviour
                 int nextIndex = (indexOfCurrentTarget < NetworkRoomManagerExt.LivingPlayers.Count - 1)
                     ? indexOfCurrentTarget + 1
                     : 0;
+                
+                //CHECK THIS AS A MORE NEAT SOLUTION!
+                //int nextIndex = ++indexOfCurrentTarget % NetworkRoomManagerExt.LivingPlayers.Count;
+                //int nextIndex = indexOfCurrentTarget++ % NetworkRoomManagerExt.LivingPlayers.Count;
+                
                 currentTarget = NetworkRoomManagerExt.LivingPlayers[nextIndex];
                 UpdateTarget();
             }

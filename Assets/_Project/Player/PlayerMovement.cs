@@ -17,10 +17,14 @@ public class PlayerMovement : NetworkBehaviour
     private float horizontalAxis;
     private bool jump;
 
+    private Camera camera;
+
     private void Start()
     {
         //ignore collision between players - layer 6 needs to be the player layer
         Physics2D.IgnoreLayerCollision(6, 6);
+
+        camera = Camera.main;
     }
 
     private void FixedUpdate()
@@ -30,12 +34,16 @@ public class PlayerMovement : NetworkBehaviour
         
         //jump
         if(jump && groundCheck.IsGrounded()) PerformJump();
+        
         //move
         PerformMoveHorizontal();
         
         //reset input
         horizontalAxis = 0f;
         jump = false;
+        
+        //screen edge teleport
+        Teleport();
     }
 
     public void MoveHorizontally(float axis) => horizontalAxis = axis;
@@ -54,6 +62,21 @@ public class PlayerMovement : NetworkBehaviour
     {
         float horizontalVelocity = horizontalAxis * moveSpeed * Time.deltaTime;
         rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
+    }
+    
+    private void Teleport()
+    {
+        float cameraHeight = camera.orthographicSize * 2.0f;
+        float cameraWidth = cameraHeight * camera.aspect;
+
+        float cameraBorderLeft = camera.transform.position.x - cameraWidth / 2f;
+        float cameraBorderRight = camera.transform.position.x + cameraWidth / 2f;
+
+        if (rb.position.x < cameraBorderLeft)
+            rb.position = rb.position.With(x: cameraBorderRight);
+
+        if (transform.position.x > cameraBorderRight)
+            rb.position = rb.position.With(x: cameraBorderLeft);
     }
 
     private void OnValidate()
