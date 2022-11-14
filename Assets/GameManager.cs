@@ -17,6 +17,8 @@ public class GameManager : NetworkBehaviour
     
     // Reference to the platform prefab to spawn in the level
     public GameObject platformPrefab;
+
+    public List<GameObject> platforms = new List<GameObject>();
     
     // Reference to scriptable objects gameplay setting data
     public GameplayData gameplaySetting;
@@ -64,10 +66,10 @@ public class GameManager : NetworkBehaviour
     #region Private members
 
     // Stores the current phase of the game play loop
-    [SyncVar] private GameState currentState;
+    [SerializeField, SyncVar] private GameState currentState;
     
     // Timer counting upwards as soon as the level starts. used to change the game State after predetermined times
-    [SyncVar] private float gameTime;
+    [SerializeField,SyncVar] private float gameTime;
     
     // Sync Var to store the current distance of the dead zone to the camera. Needs to be the same on all clients.
     [SyncVar] private float deadZoneDistance;
@@ -82,7 +84,7 @@ public class GameManager : NetworkBehaviour
     
 
     // Difficulty maps an integer value to "currentGameState"
-    private int Difficulty
+    private float Difficulty
     {
         get
         {
@@ -91,41 +93,34 @@ public class GameManager : NetworkBehaviour
                 case GameState.Preparation:
                     return 0;
                 case GameState.Warmup:
-                    return 1;
+                    return .6f;
                 case GameState.EarlyGame:
-                    return 2;
+                    return .8f;
                 case GameState.MidGame:
-                    return 4;
+                    return 1.0f;
                 case GameState.EndGame:
-                    return 6;
+                    return 1.4f;
             }
             return Difficulty;
         }
     }
-
-    // Total duration of the match and total interpolation time between initial camera position Y and final camera position Y
-    private float movingDuration = 240.0f;
     // Tracks time between platform spawns
     private float spawnTimeTracker;
     // Tracks time between individual game sates
-    private float stateTimeTracker;
+    [SerializeField] private float stateTimeTracker;
     // Game Time * difficulty for speed up of the movement of the camera
     private float gameTimeDifficulty;
     // Determines the height distance from the center of the view at which platforms will be spawned
     private float spawnHeight = 15.0f;
-    
-    // Stores the different times of each game state
-    private readonly Dictionary<GameState, float> stateDurations = new Dictionary<GameState, float>();
-    
-    // Maps a spawn time for spawning platforms to the current difficulty of the game
-    private readonly Dictionary<int, float> difficultySpawnTimeMapping = new Dictionary<int, float>();
-    
+
     // Target position Y for the camera to rise towards unitl the end of a match
     private float targetCameraPositionY;
     // Target distance to interpolate the position Y of the dead zone towards
     private float targetDeadzoneDistance;
     // Initial position Y of the camera
     private float startCameraPositionY = 2.0f;
+    // Stores the last spawn location X to determine max distance of new spawn platform from last spawn
+    private float lastSpawnX;
     
     #endregion
 
@@ -139,72 +134,58 @@ public class GameManager : NetworkBehaviour
         targetDeadzoneDistance = 10.0f;
         float startingSpawnTime = 2.0f;
         deadZoneDistance = startDeadzoneDistance;
-        
-        stateDurations.Add(GameState.Preparation, 10.0f);
-        stateDurations.Add(GameState.Warmup, 60.0f);
-        stateDurations.Add(GameState.EarlyGame, 30.0f);
-        stateDurations.Add(GameState.MidGame, 40.0f);
-        stateDurations.Add(GameState.EndGame, 60.0f);
-        
-        
-        difficultySpawnTimeMapping.Add(1, startingSpawnTime);
-        difficultySpawnTimeMapping.Add(2, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(3, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(4, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(5, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(6, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(7, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(8, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(9, startingSpawnTime + 0.0f);
-        difficultySpawnTimeMapping.Add(10, startingSpawnTime + 0.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
         gameTime += Time.deltaTime;
-        stateTimeTracker += Time.deltaTime;
-        CheckGameState();
-        
-        if (currentState != GameState.Preparation)
+
+        if (isServer)
         {
-            if (isServer)
+            stateTimeTracker += Time.deltaTime;
+            CheckGameState();
+
+            if (currentState != GameState.Preparation)
             {
-                
                 CheckPlatformSpawn();
                 UpdateDeadzoneDistance();
 
                 spawnTimeTracker += Time.deltaTime;
                 gameTimeDifficulty += Time.deltaTime * Difficulty;
-                currentCameraPositionY = Mathf.Lerp(startCameraPositionY, targetCameraPositionY, (gameTimeDifficulty) / movingDuration);
+                currentCameraPositionY = Mathf.Lerp(startCameraPositionY, targetCameraPositionY,
+                    (gameTimeDifficulty) / gameplaySetting.totalGameDuration);
             }
-            
         }
-        
     }
     
     // Checks the current "stateTimeTracker" value against the current game states duration stored in "stateDurations"
     private void CheckGameState()
     {
-        if (currentState == GameState.Preparation && stateTimeTracker >= stateDurations[GameState.Preparation])
+        
+        if (currentState == GameState.Preparation && stateTimeTracker >= gameplaySetting.GetStateDuration(GameState.Preparation))
         {
             currentState = GameState.Warmup;
             stateTimeTracker = 0.0f;
+            Debug.Log("Changed gameplay state to: \"Warmup\"");
         }
-        if (currentState == GameState.Warmup && stateTimeTracker >= stateDurations[GameState.Warmup])
+        if (currentState == GameState.Warmup && stateTimeTracker >= gameplaySetting.GetStateDuration(GameState.Warmup))
         {
             currentState = GameState.EarlyGame;
             stateTimeTracker = 0.0f;
+            Debug.Log("Changed gameplay state to: \"EarlyGame\"");
         }
-        if (currentState == GameState.EarlyGame && stateTimeTracker >= stateDurations[GameState.EarlyGame])
+        if (currentState == GameState.EarlyGame && stateTimeTracker >= gameplaySetting.GetStateDuration(GameState.EarlyGame))
         {
             currentState = GameState.MidGame;
             stateTimeTracker = 0.0f;
+            Debug.Log("Changed gameplay state to: \"MidGame\"");
         }
-        if (currentState == GameState.MidGame && stateTimeTracker >= stateDurations[GameState.MidGame])
+        if (currentState == GameState.MidGame && stateTimeTracker >= gameplaySetting.GetStateDuration(GameState.MidGame))
         {
             currentState = GameState.EndGame;
             stateTimeTracker = 0.0f;
+            Debug.Log("Changed gameplay state to: \"EndGame\"");
         }
     }
     
@@ -213,12 +194,12 @@ public class GameManager : NetworkBehaviour
     {
         if (currentState == GameState.Warmup)
         {
-            startDeadzoneDistance = Mathf.Lerp(startDeadzoneDistance, -50.0f, Time.deltaTime / stateDurations[GameState.Warmup]);
+            startDeadzoneDistance = Mathf.Lerp(startDeadzoneDistance, -50.0f, Time.deltaTime / gameplaySetting.GetStateDuration(GameState.Warmup));
             deadZoneDistance = startDeadzoneDistance;
         }
         else if (currentState != GameState.Warmup && currentState != GameState.Preparation)
         {
-            deadZoneDistance = Mathf.Lerp(startDeadzoneDistance, targetDeadzoneDistance, (gameTimeDifficulty) / movingDuration);
+            deadZoneDistance = Mathf.Lerp(startDeadzoneDistance, targetDeadzoneDistance, (gameTimeDifficulty) / gameplaySetting.totalGameDuration);
             currentDeadZonePositionY = currentCameraPositionY + deadZoneDistance;
         }
     }
@@ -226,16 +207,30 @@ public class GameManager : NetworkBehaviour
     // Checks the current "spawnTimeTracker" value against the current time to spawn mapped in "difficultySpawnTimeMapping" depending on the current difficulty
     private void CheckPlatformSpawn()
     {
-        if (spawnTimeTracker >= difficultySpawnTimeMapping[Difficulty] && platformPrefab)
+        if (spawnTimeTracker >= gameplaySetting.GetStateSpawnTime(currentState) && platformPrefab)
         {
-            float randomPlatformWidth = Random.Range(0.0f, 1.0f);
-            float spawnX = Random.Range(-14.0f, 14.0f);
+            float randomPlatformWidth = Random.Range(gameplaySetting.GetStateSpawnMinWidth(currentState), 1.0f);
+            float maxDistanceToLast = gameplaySetting.GetStateSpawnmaxDistance(currentState);
+            float spawnX = lastSpawnX + maxDistanceToLast * (Random.value > .5 ? -1.0f : 1.0f) + Random.Range(-1.0f, 1.0f);
+            
+            // clamp value to boundaries of the screen
+            if (spawnX > 14.0f)
+            {
+                spawnX = 14.0f;
+            }
+            if (spawnX < -14.0f)
+            {
+                spawnX = -14.0f;
+            }
+
             spawnHeight = currentCameraPositionY + 20.0f;
             
             GameObject newPlatform = Instantiate(platformPrefab, new Vector3(spawnX, spawnHeight, 0), Quaternion.identity);
             newPlatform.GetComponent<PlatformWidth>().SetWidth(randomPlatformWidth);
             NetworkServer.Spawn(newPlatform);
             spawnTimeTracker = 0;
+
+            lastSpawnX = spawnX;
         }
     }
     

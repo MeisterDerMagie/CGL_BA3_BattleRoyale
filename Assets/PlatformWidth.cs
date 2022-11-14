@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class PlatformWidth : MonoBehaviour
+public class PlatformWidth : NetworkBehaviour
 {
-    [SerializeField, Range(0f, 1f)] private float width = 0.5f;
+    [SerializeField, Range(0f, 1f), SyncVar] private float width = 0.5f;
     [SerializeField, HideInInspector] private float widthBefore = -1f;
     [SerializeField] private GameObject[] platforms;
 

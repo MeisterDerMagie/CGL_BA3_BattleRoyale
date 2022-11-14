@@ -12,15 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049c6bc75e2c1544897c81569df6cc42, type: 3}
   m_Name: BasicGameplay
   m_EditorClassIdentifier: 
-  totalGameDuration: 240
-  stateDurations:
+  totalGameDuration: 180
+  stateSettingsList:
   - state: 0
-    duration: 15
+    duration: 2
+    platformSpawnTime: 7
+    platformMaxSpawnDistance: 6
+    platformMinWidth: 1
   - state: 1
-    duration: 40
+    duration: 35
+    platformSpawnTime: 6.5
+    platformMaxSpawnDistance: 7.5
+    platformMinWidth: 0.75
   - state: 2
-    duration: 70
+    duration: 50
+    platformSpawnTime: 5.5
+    platformMaxSpawnDistance: 8
+    platformMinWidth: 0.5
   - state: 3
-    duration: 70
+    duration: 50
+    platformSpawnTime: 5
+    platformMaxSpawnDistance: 9
+    platformMinWidth: 0.25
   - state: 4
-    duration: 45
+    duration: 35
+    platformSpawnTime: 3
+    platformMaxSpawnDistance: 10
+    platformMinWidth: 0
