@@ -28,6 +28,13 @@ public class Player : NetworkBehaviour
     private void Start()
     {
         NetworkRoomManagerExt.OnNewPlayerSpawned?.Invoke();
+        OnPlayerWon += RemoveMotionOnWin;
+    }
+
+    private void OnDestroy()
+    {
+        OnPlayerWon -= RemoveMotionOnWin;
+
     }
 
     //inform the UI about changes to the player settings
@@ -40,6 +47,15 @@ public class Player : NetworkBehaviour
         
         //play death animation
         anim.PlayDeathAnimation();
+        
+        //remove all components that are no longer needed (like movement)
+        Destroy(GetComponent<PlayerMovement>());
+        Destroy(GetComponentInChildren<PlayerAnimationsController>());
+    }
+
+    private void RemoveMotionOnWin(Player winner)
+    {
+        if (!winner.isLocalPlayer) return;
         
         //remove all components that are no longer needed (like movement)
         Destroy(GetComponent<PlayerMovement>());

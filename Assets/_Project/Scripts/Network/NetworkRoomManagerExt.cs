@@ -10,6 +10,8 @@ namespace Doodlenite {
 public class NetworkRoomManagerExt : NetworkRoomManager
 {
     public string lobbyCode = string.Empty;
+    
+    
     public static List<Player> players = new List<Player>();
     public static List<Player> LivingPlayers => players.Where(player => player.isAlive).ToList();
     public static List<Player> DeadPlayers => players.Where(player => !player.isAlive).ToList();
@@ -31,6 +33,13 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     }
 
     public static Action OnNewPlayerSpawned = delegate {  };
+
+    //we need this due to the domain reloading being turned off
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    public static void ResetStaticFields()
+    {
+        players.Clear();
+    }
 
     public override void Start()
     {

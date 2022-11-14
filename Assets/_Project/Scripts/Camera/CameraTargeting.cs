@@ -3,17 +3,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.LuisPedroFonseca.ProCamera2D;
+using Mirror;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Doodlenite {
-public class CameraTargeting : MonoBehaviour
+public class CameraTargeting : NetworkBehaviour
 {
     [SerializeField] private ProCamera2D camera2D;
     private Player currentTarget;
     
     private void Update()
     {
+        if (isServer && !isLocalPlayer) return;
+        
         if (currentTarget != null && currentTarget.isAlive) return;
         NextTarget();
     }

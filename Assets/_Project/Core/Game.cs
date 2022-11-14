@@ -15,10 +15,10 @@ public class Game : NetworkBehaviour
     [SyncVar][ShowInInspector]
     private float difficulty = 1f;
     public float Difficulty => difficulty;
+    public float DifficultyNormalized => 1f / maxDifficulty * (difficulty - 1f);
 
     [SerializeField] private float preGameCountdownDuration;
     [SerializeField] private float maxDifficulty;
-    [SerializeField] private AnimationCurve difficultyCurve;
     [SerializeField] private float difficultyIncrease;
     [SerializeField] private Deadzone deadzone;
 
@@ -58,6 +58,11 @@ public class Game : NetworkBehaviour
     {
         //tick statemachine
         gameStateMachine.Tick();
+        
+        //increase difficulty
+        if (!isServer) return;
+        difficulty += difficultyIncrease * Time.deltaTime;
+        difficulty = Mathf.Clamp(difficulty, 1f, maxDifficulty);
     }
 
     public void OnDestroy()

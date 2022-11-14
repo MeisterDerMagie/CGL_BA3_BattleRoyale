@@ -16,7 +16,7 @@ public class PlatformWidth : MonoBehaviour
     {
         this.width = Mathf.Clamp(width, 0f, 1f);
         
-        int index = Mathf.RoundToInt((platforms.Length-1) * width);
+        int index = Mathf.RoundToInt((platforms.Length-1) * this.width);
 
         foreach (Transform child in transform)
         {
