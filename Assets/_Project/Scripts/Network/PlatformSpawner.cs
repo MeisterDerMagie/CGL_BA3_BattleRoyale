@@ -89,6 +89,7 @@ public class PlatformSpawner : NetworkBehaviour
     {
         foreach (Player player in NetworkRoomManagerExt.LivingPlayers)
         {
+            if(player == null) continue;
             if (player.transform.position.y + headroom > maxPlayerHeight) maxPlayerHeight = player.transform.position.y + headroom;
         }
     }

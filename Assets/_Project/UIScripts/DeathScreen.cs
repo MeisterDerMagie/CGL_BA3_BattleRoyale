@@ -20,8 +20,10 @@ public class DeathScreen : MonoBehaviour
 
     private void OnPlayerDied(Player _player)
     {
+        if (!_player.isLocalPlayer) return;
+    
         //show death screen
-        if(_player.isLocalPlayer) ShowDeathScreen();
+        ShowDeathScreen();
         
         //show leave match screen
         if(!leaveMatchScreen.gameObject.activeSelf) leaveMatchScreen.gameObject.SetActive(true);
