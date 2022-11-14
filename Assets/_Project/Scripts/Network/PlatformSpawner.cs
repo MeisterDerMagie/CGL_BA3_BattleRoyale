@@ -26,18 +26,36 @@ public class PlatformSpawner : NetworkBehaviour
     private float spawnedHeight;
     private Vector2 lastPlatformPosition;
 
+    private SyncDictionary<Vector3, float> platforms = new SyncDictionary<Vector3, float>(); //Vector3 = position, float = platformWidth
 
     private void Awake()
     {
         lastPlatformPosition = new Vector2(0f, platformParent.transform.position.y);
     }
-    
+
+    public override void OnStartClient()
+    {
+        platforms.Callback += UpdatePlatforms;
+        
+        //process initial platforms
+        foreach (var platform in platforms)
+        {
+            SpawnPlatform(platform.Key, platform.Value);
+        }
+    }
+
     private void Update()
     {
         if (!isServer) return;
         
         UpdateMaxPlayerHeight();
         SpawnNewPlatforms();
+    }
+
+    [Client]
+    private void UpdatePlatforms(SyncDictionary<Vector3, float>.Operation op, Vector3 platformPosition, float platformWidth)
+    {
+        SpawnPlatform(platformPosition, platformWidth);
     }
 
     private void SpawnNewPlatforms()
@@ -68,16 +86,15 @@ public class PlatformSpawner : NetworkBehaviour
             if (spawnPosition.x > cameraRightBorder)
                 spawnPosition = spawnPosition.With(spawnPosition.x - cameraWidth);
 
-            //instantiate platform on server
-            PlatformWidth newPlatform = Instantiate(platformPrefab, spawnPosition, quaternion.identity, platformParent);
-            
-            //set platform width
+            //calculate platform width
             float platformWidth = 1f - difficulty;
             float platformWidthRandomized = platformWidth + Random.Range(0f, widthRandomness) * RandomPositiveOrNegative.Get();
-            newPlatform.SetWidth(platformWidthRandomized);
+
+            //spawn platform on server
+            SpawnPlatform(spawnPosition, platformWidthRandomized);
             
-            //instantiate platform on clients
-            SpawnPlatformOnClient(spawnPosition, platformWidthRandomized);
+            //add platform to syncDictionary, in order to spawn it on the clients
+            platforms.Add(spawnPosition, platformWidthRandomized);
             
             //cache results
             spawnedHeight += yDistanceRandomized;
@@ -93,9 +110,8 @@ public class PlatformSpawner : NetworkBehaviour
             if (player.transform.position.y + headroom > maxPlayerHeight) maxPlayerHeight = player.transform.position.y + headroom;
         }
     }
-
-    [ClientRpc]
-    private void SpawnPlatformOnClient(Vector3 spawnPosition, float width)
+    
+    private void SpawnPlatform(Vector3 spawnPosition, float width)
     {
         PlatformWidth newPlatform = Instantiate(platformPrefab, spawnPosition, quaternion.identity, platformParent);
         newPlatform.SetWidth(width);

@@ -42,6 +42,8 @@ public class Player : NetworkBehaviour
     private void OnPlayerColorChanged(Color _oldValue, Color _newValue) => OnPlayerSettingsChanged?.Invoke();
     public void OnPlayerAliveStateChanged(bool _oldValue, bool _newValue)
     {
+        Debug.Log($"Player alive state changed. oldValue: {_oldValue}, newValue: {_newValue}");
+        
         OnPlayerSettingsChanged?.Invoke();
         OnPlayerDied?.Invoke(this);
         

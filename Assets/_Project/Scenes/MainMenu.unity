@@ -286,7 +286,7 @@ MonoBehaviour:
   DualMode: 1
   NoDelay: 1
   Interval: 10
-  Timeout: 2147483647
+  Timeout: 10000
   FastResend: 2
   CongestionWindow: 0
   SendWindowSize: 4096
@@ -327,7 +327,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 5976966208757574527, guid: c44b62be9da7420418200e54d632867b, type: 3}
   showRoomGUI: 0
-  minPlayers: 1
+  minPlayers: 2
   roomPlayerPrefab: {fileID: 3259291455494407790, guid: 0dc68a3ea45361843ac069a509b12ac9, type: 3}
   RoomScene: Assets/_Project/Scenes/Lobby.unity
   GameplayScene: Assets/_Project/Scenes/GameMartin.unity
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23255023}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
