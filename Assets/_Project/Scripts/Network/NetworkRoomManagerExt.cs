@@ -32,6 +32,8 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         }
     }
 
+    private bool someoneWon;
+    
     public static Action OnNewPlayerSpawned = delegate {  };
 
     //we need this due to the domain reloading being turned off
@@ -53,6 +55,10 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         base.OnDestroy();
         Player.OnPlayerDied -= OnPlayerDied;
         OnNewPlayerSpawned -= UpdatePlayerList;
+        
+        players.Clear();
+
+        Debug.Log("NetworkRoomManagerExt destroyed");
     }
 
     public override void OnRoomServerPlayersReady()
@@ -96,8 +102,8 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     private void OnPlayerDied(Player _player)
     {
         Debug.Log($"{_player.playerName} died.");
-        UpdatePlayerList();
-        CheckForWin();
+        //UpdatePlayerList();
+        //CheckForWin();
     }
 
     private void UpdatePlayerList()
@@ -111,12 +117,38 @@ public class NetworkRoomManagerExt : NetworkRoomManager
             if (players.Contains(player)) continue;
             players.Add(player);
         }
+        
+        players.RemoveEmptyEntries();
+    }
+
+    private void Update()
+    {
+        if(someoneWon) return;
+
+        UpdatePlayerList();
+        CheckForWin();
     }
 
     private void CheckForWin()
     {
-        if(LivingPlayers.Count <= 0) Debug.LogError("Oops, something went wrong. Nobody won. How did this happen?");
-        if(LivingPlayers.Count == 1) Player.OnPlayerWon?.Invoke(LivingPlayers[0]);
+        /*
+        Debug.Log("Check for win.");
+        Debug.Log("Living players: ");
+        foreach (Player player in LivingPlayers)
+        {
+            if (player == null) Debug.Log("null");
+            else
+                Debug.Log(player.playerName);
+        }
+        */
+        
+        //if(LivingPlayers.Count <= 0) Debug.LogError("Oops, something went wrong. Nobody won. How did this happen?");
+        if (LivingPlayers.Count == 1)
+        {
+            Debug.Log("Someone won!");
+            someoneWon = true;
+            Player.OnPlayerWon?.Invoke(LivingPlayers[0]);
+        }
     }
 }
 }
