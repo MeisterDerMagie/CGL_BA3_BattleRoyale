@@ -21,11 +21,11 @@ public class Game : NetworkBehaviour
     [SerializeField] private float maxDifficulty;
     [SerializeField] private float difficultyIncrease;
     [SerializeField] private Deadzone deadzone;
+    [SerializeField] private Transform warmupScreen, goScreen;
 
-    private bool gameOver;
+    private bool gameOver = false;
     private StateMachine gameStateMachine;
-    
-    
+
     public void Awake()
     {
         if (Instance == null)
@@ -42,7 +42,7 @@ public class Game : NetworkBehaviour
         gameStateMachine = new StateMachine();
         
         //states
-        var warmupState = new GameStateWarmup(preGameCountdownDuration);
+        var warmupState = new GameStateWarmup(preGameCountdownDuration, warmupScreen, goScreen);
         var mainState = new GameStateMain(deadzone);
         var gameOverState = new GameStateGameOver(deadzone);
         

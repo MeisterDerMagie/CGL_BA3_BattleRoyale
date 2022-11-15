@@ -10,17 +10,26 @@ public class GameStateWarmup : IState
     public float Countdown { get; private set; }
     private float countdownStartTime;
 
+    private Transform warmupScreen, goScreen;
+
     public Action OnCountdownEnded = delegate {  };
     
-    public GameStateWarmup(float countdownStartTime)
+    public GameStateWarmup(float countdownStartTime, Transform warmupScreen, Transform goScreen)
     {
-        Debug.Log("Entered warmup state.");
         this.countdownStartTime = countdownStartTime;
+
+        this.warmupScreen = warmupScreen;
+        this.goScreen = goScreen;
     }
     
     public void OnEnter()
     {
+        Debug.Log("Entered warmup state.");
+        
         Countdown = countdownStartTime;
+        
+        goScreen.gameObject.SetActive(false);
+        warmupScreen.gameObject.SetActive(true);
     }
 
     public void Tick()
@@ -35,7 +44,8 @@ public class GameStateWarmup : IState
 
     public void OnExit()
     {
-        
+        goScreen.gameObject.SetActive(true);
+        warmupScreen.gameObject.SetActive(false);
     }
 }
 }

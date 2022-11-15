@@ -12,13 +12,13 @@ public class GameStateGameOver : IState
 
     public GameStateGameOver(Deadzone deadzone)
     {
-        Debug.Log("Entered gameOver state.");
-
         this.deadzone = deadzone;
     }
     
     public void OnEnter()
     {
+        Debug.Log("Entered gameOver state.");
+        
         timeSinceGameEnded = 0f;
         deadzone.StopAndDestroyCollider();
     }

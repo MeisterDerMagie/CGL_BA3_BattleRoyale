@@ -10,13 +10,13 @@ public class GameStateMain : IState
     
     public GameStateMain(Deadzone deadzone)
     {
-        Debug.Log("Entered main state.");
-
         this.deadzone = deadzone;
     }
     
     public void OnEnter()
     {
+        Debug.Log("Entered main state.");
+        
         deadzone.BeginMovement();
     }
 

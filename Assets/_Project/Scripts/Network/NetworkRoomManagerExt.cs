@@ -102,8 +102,8 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     private void OnPlayerDied(Player _player)
     {
         Debug.Log($"{_player.playerName} died.");
-        //UpdatePlayerList();
-        //CheckForWin();
+        UpdatePlayerList();
+        CheckForWin();
     }
 
     private void UpdatePlayerList()
@@ -123,10 +123,12 @@ public class NetworkRoomManagerExt : NetworkRoomManager
 
     private void Update()
     {
+        /*
         if(someoneWon) return;
 
         UpdatePlayerList();
         CheckForWin();
+        */
     }
 
     private void CheckForWin()
