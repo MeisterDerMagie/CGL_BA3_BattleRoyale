@@ -5,13 +5,14 @@ using Doodlenite;
 using Mirror;
 using UnityEngine;
 
-public class TransferLobbySettingsToPlayer : NetworkBehaviour
+public class TransferLobbySettingsToServer : NetworkBehaviour
 {
     [SerializeField] private Player player;
     private RoomPlayerData roomPlayerData;
 
     private NetworkRoomManager manager;
-    
+
+
     //Tell the server to sync the local players settings
     public override void OnStartClient()
     {
@@ -27,45 +28,27 @@ public class TransferLobbySettingsToPlayer : NetworkBehaviour
             Debug.LogWarning("Couldn't find a NetworkRoomManager. No lobby settings will be transferred to the player.");
             return;
         }
-        
-        //Transfer settings
+
+        //Transfer settings to server
         foreach (var roomPlayer in manager.roomSlots)
         {
             if (!roomPlayer.isLocalPlayer) continue;
-            
-            TransferSettings(roomPlayer.index);
+
+            var roomPlayerData = roomPlayer.GetComponent<RoomPlayerData>();
+            var data = new PlayerCustomizableData(roomPlayerData.PlayerName, roomPlayerData.PlayerColor);
+            uint playerNetId = player.netId;
+            TransferSettings(playerNetId, data);
         }
     }
 
     [Command(requiresAuthority = false)]
-    private void TransferSettings(int _roomPlayerIndex)
+    private void TransferSettings(uint playerNetId, PlayerCustomizableData data)
     {
-        var roomPlayer = GetRoomPlayerByIndex(_roomPlayerIndex);
+        var lobbySettingsApplier = FindObjectOfType<ApplyLobbySettingsToPlayers>();
 
-        if (roomPlayer == null)
-        {
-            Debug.LogWarning($"Could not find NetworkRoomPlayer with index {_roomPlayerIndex}. Will not transfer any lobby settings to the player.");
-            return;
-        }
-        
-        roomPlayerData = roomPlayer.GetComponent<RoomPlayerData>();
-        
-        player.playerColor = roomPlayerData.PlayerColor;
-        player.playerName = roomPlayerData.PlayerName;
+        lobbySettingsApplier.playerCustomizableDatas.Add(playerNetId, data);
     }
 
-    private NetworkRoomPlayer GetRoomPlayerByIndex(int _index)
-    {
-        if(manager == null) manager = FindObjectOfType<NetworkRoomManager>();
-        
-        foreach (var roomPlayer in manager.roomSlots)
-        {
-            if (roomPlayer.index == _index) return roomPlayer;
-        }
-
-        return null;
-    }
-    
     #if UNITY_EDITOR
     private void OnValidate()
     {
