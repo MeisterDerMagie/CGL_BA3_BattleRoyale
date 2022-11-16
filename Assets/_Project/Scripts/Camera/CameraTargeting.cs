@@ -19,6 +19,9 @@ public class CameraTargeting : NetworkBehaviour
         
         if (currentTarget != null && currentTarget.isAlive) return;
         NextTarget();
+        
+        //if the camera has no targets, prevent it from going crazy
+        //if(camera2D.CameraTargets.Count == 0)
     }
 
     private void UpdateTarget()

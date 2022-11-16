@@ -46,14 +46,12 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     public override void Start()
     {
         base.Start();
-        Player.OnPlayerDied += OnPlayerDied;
         OnNewPlayerSpawned += UpdatePlayerList;
     }
     
     public override void OnDestroy()
     {
         base.OnDestroy();
-        Player.OnPlayerDied -= OnPlayerDied;
         OnNewPlayerSpawned -= UpdatePlayerList;
         
         players.Clear();
@@ -87,19 +85,38 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         ServerProviderCommunication.Instance.ServerStarted();
     }
 
+    /*
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
         UpdatePlayerList();
+        CheckForWin();
+    }
+    */
+
+    //called on the server when a client disconnects
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+        UpdatePlayerList();
+        CheckForWin();
     }
 
+    //called on the server when a client connects
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerConnect(conn);
+        UpdatePlayerList();
+    }
+
+    //called on the client after connecting
     public override void OnClientConnect()
     {
         base.OnClientConnect();
         UpdatePlayerList();
     }
 
-    private void OnPlayerDied(Player _player)
+    public void OnPlayerDied(Player _player)
     {
         Debug.Log($"{_player.playerName} died.");
         UpdatePlayerList();
@@ -121,16 +138,6 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         players.RemoveEmptyEntries();
     }
 
-    private void Update()
-    {
-        /*
-        if(someoneWon) return;
-
-        UpdatePlayerList();
-        CheckForWin();
-        */
-    }
-
     private void CheckForWin()
     {
         /*
@@ -149,7 +156,11 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         {
             Debug.Log("Someone won!");
             someoneWon = true;
-            Player.OnPlayerWon?.Invoke(LivingPlayers[0]);
+            Player winner = LivingPlayers[0];
+            winner.thisPlayerWon = true;
+            
+            //call this because Syncvar hooks are not called on the server
+            winner.OnThisPlayerWon(false, true);
         }
     }
 }

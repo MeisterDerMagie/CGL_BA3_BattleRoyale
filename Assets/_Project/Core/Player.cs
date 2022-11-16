@@ -17,6 +17,9 @@ public class Player : NetworkBehaviour
     
     [SyncVar(hook = nameof(OnPlayerColorChanged))]
     public Color playerColor;
+
+    [SyncVar(hook = nameof(OnThisPlayerWon))]
+    public bool thisPlayerWon = false;
     
     public Action OnPlayerSettingsChanged = delegate{};
     public static Action<Player> OnPlayerDied = delegate(Player _player) {  };
@@ -52,8 +55,13 @@ public class Player : NetworkBehaviour
         anim.PlayDeathAnimation();
         
         //remove all components that are no longer needed (like movement)
-        Destroy(GetComponent<PlayerMovement>());
-        Destroy(GetComponentInChildren<PlayerAnimationsController>());
+        DeactivatePlayer();
+    }
+
+    public void OnThisPlayerWon(bool oldValue, bool newValue)
+    {
+        if (!thisPlayerWon) return;
+        OnPlayerWon?.Invoke(this);
     }
 
     private void RemoveMotionOnWin(Player winner)
@@ -61,6 +69,12 @@ public class Player : NetworkBehaviour
         if (!winner.isLocalPlayer) return;
         
         //remove all components that are no longer needed (like movement)
+        DeactivatePlayer();
+    }
+
+    //call this after death or win
+    private void DeactivatePlayer()
+    {
         Destroy(GetComponent<PlayerMovement>());
         Destroy(GetComponentInChildren<PlayerAnimationsController>());
     }

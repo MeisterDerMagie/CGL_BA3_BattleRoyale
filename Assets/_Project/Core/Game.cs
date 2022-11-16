@@ -23,7 +23,8 @@ public class Game : NetworkBehaviour
     [SerializeField] private Deadzone deadzone;
     [SerializeField] private Transform warmupScreen, goScreen;
 
-    private bool gameOver = false;
+    [SyncVar] private bool gameOver = false;
+    [SyncVar] private uint winner;
     private StateMachine gameStateMachine;
 
     public void Awake()
