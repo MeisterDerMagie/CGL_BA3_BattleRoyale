@@ -1951,7 +1951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &719420225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10820,7 +10820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  speed: 0.25
+  speed: 1.25
   deadZoneCollider: {fileID: 5897990866859658778}
 --- !u!4 &5897990866638277426
 Transform:
