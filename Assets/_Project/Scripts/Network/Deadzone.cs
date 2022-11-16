@@ -41,7 +41,7 @@ public class Deadzone : NetworkBehaviour
     {
         if (!isServer || !move) return;
 
-        yPos = transform.position.y + Game.Instance.Difficulty * 1f * Time.deltaTime;
+        yPos = transform.position.y + Game.Instance.Difficulty * speed * Time.deltaTime;
         transform.position = transform.position.With(y: yPos);
     }
 

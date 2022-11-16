@@ -78,5 +78,18 @@ public class Player : NetworkBehaviour
         Destroy(GetComponent<PlayerMovement>());
         Destroy(GetComponentInChildren<PlayerAnimationsController>());
     }
+
+    public void Kill()
+    {
+        if (!isServer) return;
+        
+        isAlive = false;
+        
+        //we're running this on the server, so the isAlive hook will not get called -> so call that method manually
+        OnPlayerAliveStateChanged(true, false);
+
+        var manager = FindObjectOfType<NetworkRoomManagerExt>();
+        manager.OnPlayerDied(this);
+    }
 }
 }

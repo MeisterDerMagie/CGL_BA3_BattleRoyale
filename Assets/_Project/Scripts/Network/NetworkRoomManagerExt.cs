@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Wichtel.Extensions;
 
 namespace Doodlenite {
@@ -98,6 +99,17 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         base.OnServerDisconnect(conn);
+        
+        //Kill disconnected player
+        foreach (Player player in players)
+        {
+            if (player.connectionToClient.identity != null) continue;
+
+            Debug.Log("Kill disconnected player");
+            player.Kill();
+            break;
+        }
+        
         UpdatePlayerList();
         CheckForWin();
     }

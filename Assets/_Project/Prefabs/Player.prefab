@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 2375095735794504224}
   - component: {fileID: 4883216191529774271}
   - component: {fileID: 8180429422061842124}
+  - component: {fileID: 2791615825895480704}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -401,6 +402,7 @@ MonoBehaviour:
   isAlive: 1
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 1}
+  thisPlayerWon: 0
   anim: {fileID: 1875867023741950710}
   playerMovement: {fileID: 7979604386251673043}
 --- !u!114 &4193548589960425284
@@ -516,6 +518,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d4f7066d8c472a40919e5aceb93fc88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &2791615825895480704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875867024689135980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194e4b785b9d4b7a8d376267dc1ff615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2862253435309534607

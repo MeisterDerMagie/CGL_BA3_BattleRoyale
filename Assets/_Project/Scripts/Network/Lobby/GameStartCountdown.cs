@@ -98,7 +98,7 @@ public class GameStartCountdown : NetworkBehaviour
 
     private void HideCountdownUI()
     {
-        if (countdownUI.gameObject == null) return;
+        if (countdownUI == null) return;
         countdownUI.gameObject.SetActive(false);
     }
 

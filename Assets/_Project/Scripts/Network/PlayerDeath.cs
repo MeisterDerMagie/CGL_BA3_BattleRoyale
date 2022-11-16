@@ -14,13 +14,7 @@ public class PlayerDeath : NetworkBehaviour
         if (!collision.CompareTag("DeadZone")) return;
         
         var player = GetComponent<Player>();
-        player.isAlive = false;
-        
-        //if we're the server the isAlive hook will not get called, so call that method manually
-        if(isServer) player.OnPlayerAliveStateChanged(true, false);
-
-        var manager = FindObjectOfType<NetworkRoomManagerExt>();
-        manager.OnPlayerDied(player);
+        player.Kill();
         
         Destroy(this);
     }
