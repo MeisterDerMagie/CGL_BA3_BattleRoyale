@@ -32,6 +32,8 @@ public class TransferLobbySettingsToServer : NetworkBehaviour
         //Transfer settings to server
         foreach (var roomPlayer in manager.roomSlots)
         {
+            Debug.Log($"OnStartClient(): roomPlayer.isLocalPlayer = {roomPlayer.isLocalPlayer}");
+
             if (!roomPlayer.isLocalPlayer) continue;
 
             var roomPlayerData = roomPlayer.GetComponent<RoomPlayerData>();
@@ -46,6 +48,7 @@ public class TransferLobbySettingsToServer : NetworkBehaviour
     {
         var lobbySettingsApplier = FindObjectOfType<ApplyLobbySettingsToPlayers>();
 
+        Debug.Log($"Transfer settings: netId = {playerNetId}, playerName = {data.PlayerName}");
         lobbySettingsApplier.playerCustomizableDatas.Add(playerNetId, data);
     }
 

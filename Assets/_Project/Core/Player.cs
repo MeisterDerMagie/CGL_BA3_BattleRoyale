@@ -38,6 +38,7 @@ public class Player : NetworkBehaviour
     }
 
     //inform the UI about changes to the player settings
+    public void ApplyPlayerSettings() => OnPlayerSettingsChanged?.Invoke();
     private void OnPlayerNameChanged(string _oldValue, string _newValue) => OnPlayerSettingsChanged?.Invoke();
     private void OnPlayerColorChanged(Color _oldValue, Color _newValue) => OnPlayerSettingsChanged?.Invoke();
     public void OnPlayerAliveStateChanged(bool _oldValue, bool _newValue)
