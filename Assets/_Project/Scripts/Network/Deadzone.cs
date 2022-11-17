@@ -39,10 +39,29 @@ public class Deadzone : NetworkBehaviour
     
     private void Update()
     {
+        //DEBUG STOP DEADZONE
+        /*
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DEBUG_ToggleDeadzoneMovement();
+        }
+        */
+        //DEBUG END
+        
         if (!isServer || !move) return;
 
         yPos = transform.position.y + Game.Instance.Difficulty * speed * Time.deltaTime;
         transform.position = transform.position.With(y: yPos);
+    }
+    
+    //
+    [Command(requiresAuthority = false)]
+    private void DEBUG_ToggleDeadzoneMovement()
+    {
+        if (speed == 0f)
+            speed = 1.25f;
+        else
+            speed = 0f;
     }
 
     private void Move(float oldYPos, float newYPos)
